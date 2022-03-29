@@ -1,0 +1,150 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  min-height: 100vh;
+  background-color: #f3f4f6;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  padding: 0;
+  border: 0;
+}
+
+@layer components {
+  .layout-p {
+    @apply px-3 md:px-8 lg:px-14 xl:px-24 2xl:px-0;
+  }
+  .layout-m {
+    @apply mx-3 md:mx-8 lg:mx-14 xl:mx-24 2xl:mx-0;
+  }
+  .btn-primary {
+    @apply bg-primary-500 rounded-full min-w-[90px] py-2 px-4 text-white font-bold lg:hover:bg-primary-600;
+  }
+  .btn-secondary {
+    @apply bg-secondary-500 rounded-full min-w-[90px] py-2 px-4 text-gray-900 font-bold lg:hover:bg-secondary-600;
+  }
+  .shadow-bm {
+    filter: drop-shadow(0 10px 8px rgb(0 0 0 / 0.04))
+      drop-shadow(0 4px 3px rgb(0 0 0 / 0.01));
+  }
+  .rtl {
+    direction: rtl;
+  }
+  .ltr {
+    direction: ltr;
+  }
+}
+
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #fbba00 white;
+}
+.custom-scrollbar::-webkit-scrollbar {
+  width: 1rem;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: white;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #ececec;
+  border-radius: 15px;
+  border: 5px solid white;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #fbba00;
+}
+
+#lbab {
+  height: 70vh;
+  width: 90vw;
+  position: relative;
+  perspective: 3000px;
+}
+
+.door {
+  height: 100%;
+  width: 50%;
+  position: absolute;
+}
+
+#full-door {
+  background-image: url('../public/door-full.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+#left-door {
+  background-image: url('../public/door-left.svg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  top: 0;
+  left: 1px;
+  transform-origin: left;
+  transition: transform 0.5s ease-in-out;
+  display: none;
+}
+
+#right-door {
+  background-image: url('../public/door-right.svg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  top: 0;
+  right: 2px;
+  transform-origin: right;
+  transition: transform 0.5s ease-in-out;
+  display: none;
+}
+
+#left-door.open {
+  transform: rotateY(-140deg);
+}
+#right-door.open {
+  transform: rotateY(140deg);
+}
+#lbab:hover #left-door {
+  transform: rotateY(-140deg);
+}
+#lbab:hover #right-door {
+  transform: rotateY(140deg);
+}
+
+@media (max-width: 360px) {
+  #lbab {
+    height: 60vh;
+    width: 80vw;
+  }
+}
+@media (min-width: 768px) {
+  #lbab {
+    height: 60vh;
+    width: 60vw;
+  }
+  #full-door {
+    background-size: cover;
+  }
+  #left-door {
+    display: block;
+  }
+  #right-door {
+    display: block;
+  }
+}
+
+@media (min-width: 1280px) {
+  #lbab {
+    height: 90vh;
+    width: 40vw;
+  }
+}
