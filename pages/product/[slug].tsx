@@ -5,7 +5,7 @@ import { useContext, useEffect, useState } from 'react';
 import { RadioGroup } from '@headlessui/react';
 import { Rating } from '@mui/material';
 import { Colors, Product } from '@/interfaces/index';
-import CartContext from '@/context/cart/cartContext';
+import  CartContext  from '@/context/cart/CartContext';
 
 // Importing static products list
 import products from '@/data/products.json';
