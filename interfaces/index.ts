@@ -40,3 +40,4 @@ export interface Product {
   colors: Array<Colors>;
   description: Array<string>;
 }
+

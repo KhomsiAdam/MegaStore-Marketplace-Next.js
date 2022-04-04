@@ -1,16 +1,19 @@
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { RadioGroup } from '@headlessui/react';
 import { Rating } from '@mui/material';
 import { Colors, Product } from '@/interfaces/index';
+import CartContext from '@/context/cart/cartContext';
 
 // Importing static products list
 import products from '@/data/products.json';
 // const product = products[0];
 
-const ProductDetails = () => {
+const ProductDetails = ({ productElement }:any) => {
+  const { addToCart } = useContext(CartContext);
+
   const router = useRouter();
   const { query, isReady } = router;
   const { slug } = query;
@@ -184,7 +187,9 @@ const ProductDetails = () => {
                 <span className='text-2xl font-medium text-gray-900 title-font'>
                   {product?.price}Dhs
                 </span>
-                <button className='flex px-6 py-2 ml-auto text-white border-0 rounded bg-primary-500 focus:outline-none hover:bg-primary-600'>
+                <button className='flex px-6 py-2 ml-auto text-white border-0 rounded bg-primary-500 focus:outline-none hover:bg-primary-600' 
+                onClick={()=>addToCart(productElement)}>
+                
                   Ajouter au panier
                 </button>
                 <button className='inline-flex items-center justify-center w-10 h-10 p-0 ml-4 text-white bg-gray-400 border-0 rounded-full hover:bg-primary-500'>

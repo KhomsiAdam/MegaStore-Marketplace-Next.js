@@ -30,6 +30,6 @@
       "@/app/*": ["app/*"]
     },
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "redux/rootReducer.js", "redux/store.js"],
   "exclude": ["node_modules"]
 }
