@@ -1,22 +1,34 @@
-import '@/styles/globals.css';
-import type { AppProps } from 'next/app';
-import { ApolloProvider } from '@apollo/client';
-import apolloClient from 'graphql/apollo';
-import { Header } from '@/components/Header';
-import { Navbar } from '@/components/Navbar';
-import { AuthModal } from '@/components/AuthModal';
-import { ModalProvider } from '@/context/ModalContext';
+import "@/styles/globals.css";
+import type { AppProps } from "next/app";
+import { ApolloProvider } from "@apollo/client";
+import apolloClient from "graphql/apollo";
+import { ModalProvider } from "@/context/ModalContext";
+import { ReactElement } from "react";
+import { NextPage } from "next";
+import { defaultLayout } from "layouts";
+import { NextPageWithLayout } from "@/interfaces/index";
 
-function MyApp({ Component, pageProps }: AppProps) {
+type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout;
+};
+
+function MyApp({ Component, pageProps }: AppPropsWithLayout) {
+  const Layout =
+    Component.Layout && Component.Layout != "none"
+      ? Component.Layout
+      : Component.Layout != "none"
+      ? defaultLayout
+      : ({ children }: { children: ReactElement }) => children;
+
   return (
     <ApolloProvider client={apolloClient}>
       <ModalProvider>
-        <AuthModal />
-        <Header />
-        <main className='mx-auto mt-4 layout-p max-w-7xl'>
-          <Component {...pageProps} />
-        </main>
-        <Navbar />
+        {
+          // @ts-ignore
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        }
       </ModalProvider>
     </ApolloProvider>
   );

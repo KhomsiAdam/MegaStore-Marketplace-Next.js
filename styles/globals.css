@@ -73,7 +73,7 @@ body {
 }
 
 #full-door {
-  background-image: url('../public/door-full.svg');
+  background-image: url("../public/door-full.svg");
   background-size: contain;
   background-repeat: no-repeat;
   height: 100%;
@@ -86,7 +86,7 @@ body {
 }
 
 #left-door {
-  background-image: url('../public/door-left.svg');
+  background-image: url("../public/door-left.svg");
   background-size: cover;
   background-repeat: no-repeat;
   top: 0;
@@ -97,7 +97,7 @@ body {
 }
 
 #right-door {
-  background-image: url('../public/door-right.svg');
+  background-image: url("../public/door-right.svg");
   background-size: cover;
   background-repeat: no-repeat;
   top: 0;
@@ -147,4 +147,11 @@ body {
     height: 90vh;
     width: 40vw;
   }
+}
+
+.borderRadius {
+  border-radius: 6px;
+}
+.roundedCircle {
+  border-radius: 100%;
 }

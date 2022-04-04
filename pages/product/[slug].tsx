@@ -12,7 +12,7 @@ import products from '@/data/products.json';
 // const product = products[0];
 
 const ProductDetails = ({ productElement }:any) => {
-  const { addToCart } = useContext(CartContext);
+  // const { addToCart } = useContext(CartContext);
 
   const router = useRouter();
   const { query, isReady } = router;
