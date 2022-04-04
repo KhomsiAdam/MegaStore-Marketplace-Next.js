@@ -1,28 +1,11 @@
-import type { GetServerSideProps, NextPage } from 'next';
-import apolloClient from 'graphql/apollo';
-import {
-  HelloDocument,
-  HelloQueryVariables,
-} from '@/graphql/generated/graphql';
+import type { NextPage } from 'next';
 
-const Hello: NextPage<HelloQueryVariables> = ({ message }) => {
+const Hello: NextPage = () => {
   return (
     <>
-      <h1>{message}</h1>
+      <h1>Hello mom.</h1>
     </>
   );
 };
 
 export default Hello;
-
-export const getServerSideProps: GetServerSideProps = async () => {
-  const { data } = await apolloClient.query({
-    query: HelloDocument,
-  });
-
-  return {
-    props: {
-      message: data?.hello,
-    },
-  };
-};
