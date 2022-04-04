@@ -15,7 +15,8 @@ import { Colors, Product } from '@/interfaces/index';
 import products from '@/data/products.json';
 // const product = products[0];
 
-const ProductDetails = ({ productElement }: any) => {
+// const ProductDetails = ({ productElement }: any) => {
+const ProductDetails = () => {
   // const { addToCart } = useContext(CartContext);
 
   const router = useRouter();
