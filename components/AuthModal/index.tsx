@@ -12,16 +12,13 @@ export function AuthModal() {
     <>
       {isModalOpen ? (
         <div className='absolute top-0 left-0 z-20 grid w-full h-full overflow-hidden bg-gray-600 bg-opacity-50 place-content-center'>
-          <button
-            className='absolute w-[40px] h-[40px] p-[5px] font-bold text-white rounded-full bg-primary-500 bottom-[150px] xl:bottom-[80%] z-30 left-[50%] translate-x-[-50%]'
-            onClick={handleToggle}
-          >
-            <CloseIcon />
-          </button>
-          <div id='lbab' className='z-20'>
-            <div id='full-door' className=''></div>
-            <div id='left-door' className='z-40 door'></div>
-            <div id='right-door' className='z-40 door'></div>
+          <div className='bg-white h-[80vh] w-[90vw] xl:w-[500px] xl:h-[600px] 2xl:w-[600px] 2xl:h-[700px] relative rounded-lg'>
+            <button
+              className='absolute w-[40px] h-[40px] p-[5px] font-bold text-white rounded-full bg-primary-500 bottom-[10px] left-[50%] xl:bottom-auto xl:top-[30px] xl:right-[30px] xl:left-auto z-30 translate-y-[-50%] translate-x-[-50%] xl:translate-x-0 xl:translate-y-0'
+              onClick={handleToggle}
+            >
+              <CloseIcon />
+            </button>
           </div>
         </div>
       ) : (

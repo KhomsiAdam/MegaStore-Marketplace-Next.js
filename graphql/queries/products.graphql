@@ -1,0 +1,9 @@
+query getProductsThumbnails {
+  products {
+    id
+    name
+    thumbnails
+    price
+    discount
+  }
+}
