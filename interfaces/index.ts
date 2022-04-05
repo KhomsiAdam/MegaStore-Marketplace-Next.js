@@ -1,3 +1,10 @@
+import { NextPage } from "next";
+import { ReactNode } from "react";
+
+export type NextPageWithLayout = NextPage & {
+  Layout: ReactNode;
+};
+
 export interface CategoriesItems {
   iconName: string;
   categoryName: string;
