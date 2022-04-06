@@ -115,10 +115,10 @@ export type InvoiceSettings = {
 
 export type Media = {
   __typename?: 'Media';
-  alt?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['ID']>;
-  src?: Maybe<Scalars['String']>;
-  type?: Maybe<Scalars['String']>;
+  alt: Scalars['String'];
+  id: Scalars['ID'];
+  src: Scalars['String'];
+  type: Scalars['String'];
 };
 
 export type Mutation = {
@@ -142,7 +142,6 @@ export type Mutation = {
   subscribeToSub?: Maybe<ResponseSub>;
   updatePassword?: Maybe<User>;
   updateProduct?: Maybe<Product>;
-  updateRole?: Maybe<AuthResult>;
   updateStoreStatus?: Maybe<Store>;
   updateUserAccountStatus?: Maybe<User>;
 };
@@ -196,7 +195,7 @@ export type MutationCreateProductArgs = {
 
 export type MutationCreateStoreArgs = {
   name: Scalars['String'];
-  thumbnail: Scalars['String'];
+  thumbnail: Array<InputMaybe<Scalars['Upload']>>;
 };
 
 
@@ -245,11 +244,6 @@ export type MutationUpdatePasswordArgs = {
 export type MutationUpdateProductArgs = {
   id: Scalars['String'];
   input: ProductInput;
-};
-
-
-export type MutationUpdateRoleArgs = {
-  status: Role;
 };
 
 
@@ -328,7 +322,7 @@ export type Product = {
   id: Scalars['ID'];
   name: Scalars['String'];
   price: Scalars['Float'];
-  stock?: Maybe<Scalars['Int']>;
+  stock: Scalars['Int'];
   store: Store;
   thumbnails: Array<Maybe<Media>>;
 };
@@ -409,7 +403,7 @@ export type Store = {
   owner: User;
   products: Array<Maybe<Product>>;
   status: StoreStatus;
-  thumbnail: Scalars['String'];
+  thumbnail: Array<Maybe<Media>>;
 };
 
 export type StoreFilterInput = {
@@ -482,7 +476,7 @@ export type ResponseSub = {
   subscription?: Maybe<Scalars['String']>;
 };
 
-export type StoreFragment = { __typename?: 'Store', id: string, name: string, thumbnail: string };
+export type StoreFragment = { __typename?: 'Store', id: string, name: string, status: StoreStatus, owner: { __typename?: 'User', id: string, email: string }, thumbnail: Array<{ __typename?: 'Media', alt: string, id: string } | null> };
 
 export type UserFragment = { __typename?: 'User', id: string, role: Role };
 
@@ -509,13 +503,21 @@ export type CategoriesQuery = { __typename?: 'Query', categories: Array<{ __type
 export type ProductsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ProductsQuery = { __typename?: 'Query', products?: Array<{ __typename?: 'Product', id: string, name: string, price: number, discount: number, description: string, stock?: number | null, thumbnails: Array<{ __typename?: 'Media', alt?: string | null, id?: string | null, src?: string | null, type?: string | null } | null>, brand?: { __typename?: 'Brand', id: string, name: string, thumbnail: string } | null, category: Array<{ __typename?: 'Category', id: string, name: string } | null>, store: { __typename?: 'Store', id: string, name: string, thumbnail: string } } | null> | null };
+export type ProductsQuery = { __typename?: 'Query', products?: Array<{ __typename?: 'Product', description: string, discount: number, id: string, name: string, price: number, stock: number, brand?: { __typename?: 'Brand', id: string, name: string, thumbnail: string } | null, category: Array<{ __typename?: 'Category', id: string, name: string } | null>, store: { __typename?: 'Store', id: string, name: string, status: StoreStatus, owner: { __typename?: 'User', id: string, email: string }, thumbnail: Array<{ __typename?: 'Media', alt: string, id: string } | null> }, thumbnails: Array<{ __typename?: 'Media', alt: string, id: string, src: string, type: string } | null> } | null> | null };
 
 export const StoreFragmentDoc = gql`
     fragment store on Store {
   id
   name
-  thumbnail
+  owner {
+    id
+    email
+  }
+  status
+  thumbnail {
+    alt
+    id
+  }
 }
     `;
 export const UserFragmentDoc = gql`
@@ -635,17 +637,6 @@ export type CategoriesQueryResult = Apollo.QueryResult<CategoriesQuery, Categori
 export const ProductsDocument = gql`
     query Products {
   products {
-    id
-    name
-    price
-    discount
-    description
-    thumbnails {
-      alt
-      id
-      src
-      type
-    }
     brand {
       id
       name
@@ -655,10 +646,21 @@ export const ProductsDocument = gql`
       id
       name
     }
+    description
+    discount
+    id
+    name
+    price
+    stock
     store {
       ...store
     }
-    stock
+    thumbnails {
+      alt
+      id
+      src
+      type
+    }
   }
 }
     ${StoreFragmentDoc}`;

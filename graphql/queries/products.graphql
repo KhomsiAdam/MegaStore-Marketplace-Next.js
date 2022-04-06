@@ -1,16 +1,5 @@
 query Products {
   products {
-    id
-    name
-    price
-    discount
-    description
-    thumbnails {
-      alt
-      id
-      src
-      type
-    }
     brand {
       id
       name
@@ -20,9 +9,20 @@ query Products {
       id
       name
     }
+    description
+    discount
+    id
+    name
+    price
+    stock
     store {
       ...store
     }
-    stock
+    thumbnails {
+      alt
+      id
+      src
+      type
+    }
   }
 }

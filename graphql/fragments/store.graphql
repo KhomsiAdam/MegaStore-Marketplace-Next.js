@@ -1,5 +1,13 @@
 fragment store on Store {
   id
   name
-  thumbnail
+  owner {
+    id
+    email
+  }
+  status
+  thumbnail {
+    alt
+    id
+  }
 }
