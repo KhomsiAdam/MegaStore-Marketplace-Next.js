@@ -27,6 +27,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
   };
 };
 
+//@ts-ignore
 Vendor.Layout = VendorLayout;
 
 export default Vendor;
