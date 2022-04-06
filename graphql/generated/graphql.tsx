@@ -115,10 +115,10 @@ export type InvoiceSettings = {
 
 export type Media = {
   __typename?: 'Media';
-  alt: Scalars['String'];
-  id: Scalars['ID'];
-  src: Scalars['String'];
-  type: Scalars['String'];
+  alt?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['ID']>;
+  src?: Maybe<Scalars['String']>;
+  type?: Maybe<Scalars['String']>;
 };
 
 export type Mutation = {
@@ -181,11 +181,6 @@ export type MutationCreateCartArgs = {
 
 export type MutationCreateCategoryArgs = {
   name: Scalars['String'];
-};
-
-
-export type MutationCreateOrderArgs = {
-  input: OrderInput;
 };
 
 
@@ -333,7 +328,7 @@ export type Product = {
   id: Scalars['ID'];
   name: Scalars['String'];
   price: Scalars['Float'];
-  stock: Scalars['Int'];
+  stock?: Maybe<Scalars['Int']>;
   store: Store;
   thumbnails: Array<Maybe<Media>>;
 };
@@ -357,10 +352,7 @@ export type Query = {
   carts?: Maybe<Array<Maybe<Cart>>>;
   categories: Array<Maybe<Category>>;
   getAll?: Maybe<Array<Super>>;
-<<<<<<< HEAD
   getCustomers: Array<Maybe<Customer>>;
-=======
->>>>>>> 819e21fd422514e278da3c09c4e316b61320df70
   orders?: Maybe<Order>;
   product?: Maybe<Product>;
   products?: Maybe<Array<Maybe<Product>>>;
@@ -490,9 +482,8 @@ export type ResponseSub = {
   subscription?: Maybe<Scalars['String']>;
 };
 
-<<<<<<< HEAD
 export type StoreFragment = { __typename?: 'Store', id: string, name: string, thumbnail: string };
-=======
+
 export type UserFragment = { __typename?: 'User', id: string, role: Role };
 
 export type LoginMutationVariables = Exact<{
@@ -511,9 +502,6 @@ export type RegisterMutationVariables = Exact<{
 export type RegisterMutation = { __typename?: 'Mutation', register?: { __typename?: 'AuthPayload', token: string, user: { __typename?: 'User', id: string, role: Role } } | null };
 
 export type CategoriesQueryVariables = Exact<{ [key: string]: never; }>;
->>>>>>> 819e21fd422514e278da3c09c4e316b61320df70
-
-export type CategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type CategoriesQuery = { __typename?: 'Query', categories: Array<{ __typename?: 'Category', id: string, name: string } | null> };
@@ -521,8 +509,7 @@ export type CategoriesQuery = { __typename?: 'Query', categories: Array<{ __type
 export type ProductsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-<<<<<<< HEAD
-export type ProductsQuery = { __typename?: 'Query', products?: Array<{ __typename?: 'Product', id: string, name: string, price: number, discount: number, description: string, stock: number, thumbnails: Array<{ __typename?: 'Media', alt: string, id: string, src: string, type: string } | null>, brand?: { __typename?: 'Brand', id: string, name: string, thumbnail: string } | null, category: Array<{ __typename?: 'Category', id: string, name: string } | null>, store: { __typename?: 'Store', id: string, name: string, thumbnail: string } } | null> | null };
+export type ProductsQuery = { __typename?: 'Query', products?: Array<{ __typename?: 'Product', id: string, name: string, price: number, discount: number, description: string, stock?: number | null, thumbnails: Array<{ __typename?: 'Media', alt?: string | null, id?: string | null, src?: string | null, type?: string | null } | null>, brand?: { __typename?: 'Brand', id: string, name: string, thumbnail: string } | null, category: Array<{ __typename?: 'Category', id: string, name: string } | null>, store: { __typename?: 'Store', id: string, name: string, thumbnail: string } } | null> | null };
 
 export const StoreFragmentDoc = gql`
     fragment store on Store {
@@ -531,7 +518,6 @@ export const StoreFragmentDoc = gql`
   thumbnail
 }
     `;
-=======
 export const UserFragmentDoc = gql`
     fragment user on User {
   id
@@ -611,7 +597,6 @@ export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<Reg
 export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
->>>>>>> 819e21fd422514e278da3c09c4e316b61320df70
 export const CategoriesDocument = gql`
     query Categories {
   categories {
