@@ -41,6 +41,20 @@ export enum CacheControlScope {
   Public = 'PUBLIC'
 }
 
+export type Cart = {
+  __typename?: 'Cart';
+  amount: Scalars['Float'];
+  id: Scalars['ID'];
+  products?: Maybe<Array<Maybe<Product>>>;
+  user: Scalars['String'];
+};
+
+export type CartInput = {
+  amount: Scalars['Float'];
+  products: Array<Scalars['ID']>;
+  user: Scalars['String'];
+};
+
 export type Category = {
   __typename?: 'Category';
   id: Scalars['ID'];
@@ -102,7 +116,9 @@ export type Mutation = {
   addImage?: Maybe<Array<Scalars['String']>>;
   addSuper: Super;
   createBrand: Brand;
+  createCart: Cart;
   createCategory: Category;
+  createOrder: Order;
   createProduct: Product;
   createStore: Store;
   deleteBrand?: Maybe<Brand>;
@@ -140,9 +156,19 @@ export type MutationCreateBrandArgs = {
 };
 
 
+export type MutationCreateCartArgs = {
+  input: CartInput;
+};
+
+
 export type MutationCreateCategoryArgs = {
   name: Scalars['String'];
   path?: InputMaybe<Scalars['String']>;
+};
+
+
+export type MutationCreateOrderArgs = {
+  input: OrderInput;
 };
 
 
@@ -231,6 +257,34 @@ export type NumberQueryOperatorInput = {
   nin?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
+export type Order = {
+  __typename?: 'Order';
+  address: Scalars['String'];
+  cart?: Maybe<Cart>;
+  city: Scalars['String'];
+  country: Scalars['String'];
+  delivery: Scalars['String'];
+  estimatedTime: Scalars['String'];
+  id: Scalars['ID'];
+  status: Scalars['String'];
+  traking: Scalars['String'];
+  user: Scalars['String'];
+  zipCode: Scalars['Int'];
+};
+
+export type OrderInput = {
+  address: Scalars['String'];
+  cart: Scalars['ID'];
+  city: Scalars['String'];
+  country: Scalars['String'];
+  delivery: Scalars['String'];
+  estimatedTime: Scalars['String'];
+  status: Scalars['String'];
+  traking: Scalars['String'];
+  user: Scalars['String'];
+  zipCode: Scalars['Int'];
+};
+
 export type PageInfo = {
   __typename?: 'PageInfo';
   hasNextPage: Scalars['Boolean'];
@@ -273,8 +327,11 @@ export type Query = {
   __typename?: 'Query';
   brand?: Maybe<Brand>;
   brands: Array<Maybe<Brand>>;
+  cart?: Maybe<Cart>;
+  carts?: Maybe<Array<Maybe<Cart>>>;
   categories: Array<Maybe<Category>>;
   getAll?: Maybe<Array<Super>>;
+  orders?: Maybe<Order>;
   product?: Maybe<Product>;
   products?: Maybe<Array<Maybe<Product>>>;
   store?: Maybe<Store>;
@@ -284,6 +341,16 @@ export type Query = {
 
 export type QueryBrandArgs = {
   id: Scalars['ID'];
+};
+
+
+export type QueryCartArgs = {
+  id: Scalars['String'];
+};
+
+
+export type QueryOrdersArgs = {
+  user: Scalars['String'];
 };
 
 
@@ -406,6 +473,23 @@ export type ResponseSub = {
   subscription?: Maybe<Scalars['String']>;
 };
 
+export type UserFragment = { __typename?: 'User', id: string, role: Role };
+
+export type LoginMutationVariables = Exact<{
+  email: Scalars['String'];
+  password: Scalars['String'];
+}>;
+
+
+export type LoginMutation = { __typename?: 'Mutation', login?: { __typename?: 'AuthPayload', token: string, user: { __typename?: 'User', id: string, role: Role } } | null };
+
+export type RegisterMutationVariables = Exact<{
+  input?: InputMaybe<UserInput>;
+}>;
+
+
+export type RegisterMutation = { __typename?: 'Mutation', register?: { __typename?: 'AuthPayload', token: string, user: { __typename?: 'User', id: string, role: Role } } | null };
+
 export type CategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -416,7 +500,85 @@ export type GetProductsThumbnailsQueryVariables = Exact<{ [key: string]: never; 
 
 export type GetProductsThumbnailsQuery = { __typename?: 'Query', products?: Array<{ __typename?: 'Product', id: string, name: string, thumbnails: Array<string | null>, price: number, discount: number } | null> | null };
 
+export const UserFragmentDoc = gql`
+    fragment user on User {
+  id
+  role
+}
+    `;
+export const LoginDocument = gql`
+    mutation Login($email: String!, $password: String!) {
+  login(email: $email, password: $password) {
+    token
+    user {
+      ...user
+    }
+  }
+}
+    ${UserFragmentDoc}`;
+export type LoginMutationFn = Apollo.MutationFunction<LoginMutation, LoginMutationVariables>;
 
+/**
+ * __useLoginMutation__
+ *
+ * To run a mutation, you first call `useLoginMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useLoginMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [loginMutation, { data, loading, error }] = useLoginMutation({
+ *   variables: {
+ *      email: // value for 'email'
+ *      password: // value for 'password'
+ *   },
+ * });
+ */
+export function useLoginMutation(baseOptions?: Apollo.MutationHookOptions<LoginMutation, LoginMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument, options);
+      }
+export type LoginMutationHookResult = ReturnType<typeof useLoginMutation>;
+export type LoginMutationResult = Apollo.MutationResult<LoginMutation>;
+export type LoginMutationOptions = Apollo.BaseMutationOptions<LoginMutation, LoginMutationVariables>;
+export const RegisterDocument = gql`
+    mutation Register($input: UserInput) {
+  register(input: $input) {
+    token
+    user {
+      ...user
+    }
+  }
+}
+    ${UserFragmentDoc}`;
+export type RegisterMutationFn = Apollo.MutationFunction<RegisterMutation, RegisterMutationVariables>;
+
+/**
+ * __useRegisterMutation__
+ *
+ * To run a mutation, you first call `useRegisterMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRegisterMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [registerMutation, { data, loading, error }] = useRegisterMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<RegisterMutation, RegisterMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument, options);
+      }
+export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
+export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
+export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
 export const CategoriesDocument = gql`
     query Categories {
   categories {

@@ -58,3 +58,23 @@ body {
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: #fbba00;
 }
+
+.tab-active {
+  font-weight: bold;
+}
+
+.tab-active::after {
+  content: '';
+  height: 3px;
+  width: 24px;
+  border-radius: 1.5px;
+  background-color: #fbba00;
+  position: absolute;
+  left: 50%;
+  -ms-transform: translate(-50%);
+  transform: translate(-50%);
+  bottom: -12px;
+  bottom: -6px;
+  -webkit-animation: expandWith 0.3s;
+  animation: expandWith 0.3s;
+}
