@@ -2,6 +2,5 @@ query Categories {
   categories {
     id
     name
-    path
   }
 }

@@ -1,0 +1,5 @@
+fragment store on Store {
+  id
+  name
+  thumbnail
+}

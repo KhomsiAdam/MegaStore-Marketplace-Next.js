@@ -1,9 +1,28 @@
-query getProductsThumbnails {
+query Products {
   products {
     id
     name
-    thumbnails
     price
     discount
+    description
+    thumbnails {
+      alt
+      id
+      src
+      type
+    }
+    brand {
+      id
+      name
+      thumbnail
+    }
+    category {
+      id
+      name
+    }
+    store {
+      ...store
+    }
+    stock
   }
 }

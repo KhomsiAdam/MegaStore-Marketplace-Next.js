@@ -66,7 +66,6 @@ const Sidebar = ({ isMobileSidebarOpen, onSidebarClose, isSidebarOpen }) => {
                       height="20"
                     />
                   </ListItemIcon>
-
                   <ListItemText onClick={onSidebarClose}>
                     {item.title}
                   </ListItemText>
@@ -76,8 +75,6 @@ const Sidebar = ({ isMobileSidebarOpen, onSidebarClose, isSidebarOpen }) => {
           ))}
         </List>
       </Box>
-
-      <Buynow />
     </Box>
   );
   if (lgUp) {

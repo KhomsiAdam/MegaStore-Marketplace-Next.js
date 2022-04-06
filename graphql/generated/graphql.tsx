@@ -17,6 +17,21 @@ export type Scalars = {
   Upload: any;
 };
 
+export enum AccountStatus {
+  Active = 'ACTIVE',
+  Inactive = 'INACTIVE'
+}
+
+export type Address = {
+  __typename?: 'Address';
+  city?: Maybe<Scalars['String']>;
+  country?: Maybe<Scalars['String']>;
+  line1?: Maybe<Scalars['String']>;
+  line2?: Maybe<Scalars['String']>;
+  postal_code?: Maybe<Scalars['String']>;
+  state?: Maybe<Scalars['String']>;
+};
+
 export type ArrayOperatorInput = {
   contains?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
@@ -41,17 +56,30 @@ export enum CacheControlScope {
   Public = 'PUBLIC'
 }
 
+export type Cart = {
+  __typename?: 'Cart';
+  amount: Scalars['Float'];
+  id: Scalars['ID'];
+  products?: Maybe<Array<Maybe<Product>>>;
+  user: Scalars['String'];
+};
+
+export type CartInput = {
+  amount: Scalars['Float'];
+  products: Array<Scalars['ID']>;
+  user: Scalars['String'];
+};
+
 export type Category = {
   __typename?: 'Category';
   id: Scalars['ID'];
   name: Scalars['String'];
-  path?: Maybe<Scalars['String']>;
   products: Array<Maybe<Product>>;
 };
 
 export type Customer = {
   __typename?: 'Customer';
-  address?: Maybe<Scalars['String']>;
+  address?: Maybe<Address>;
   balance?: Maybe<Scalars['Int']>;
   created?: Maybe<Scalars['Int']>;
   currency?: Maybe<Scalars['String']>;
@@ -74,17 +102,6 @@ export type Customer = {
   test_clock?: Maybe<Scalars['String']>;
 };
 
-export type Dimensions = {
-  __typename?: 'Dimensions';
-  color?: Maybe<Scalars['String']>;
-  size?: Maybe<Scalars['String']>;
-};
-
-export type DimensionsInput = {
-  color?: InputMaybe<Scalars['String']>;
-  size?: InputMaybe<Scalars['String']>;
-};
-
 export type FileInput = {
   files?: InputMaybe<Array<Scalars['Upload']>>;
 };
@@ -96,13 +113,24 @@ export type InvoiceSettings = {
   footer?: Maybe<Scalars['String']>;
 };
 
+export type Media = {
+  __typename?: 'Media';
+  alt: Scalars['String'];
+  id: Scalars['ID'];
+  src: Scalars['String'];
+  type: Scalars['String'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   addCustomer?: Maybe<Customer>;
   addImage?: Maybe<Array<Scalars['String']>>;
   addSuper: Super;
+  confirmUserIsSeller?: Maybe<User>;
   createBrand: Brand;
+  createCart: Cart;
   createCategory: Category;
+  createOrder: Order;
   createProduct: Product;
   createStore: Store;
   deleteBrand?: Maybe<Brand>;
@@ -116,6 +144,7 @@ export type Mutation = {
   updateProduct?: Maybe<Product>;
   updateRole?: Maybe<AuthResult>;
   updateStoreStatus?: Maybe<Store>;
+  updateUserAccountStatus?: Maybe<User>;
 };
 
 
@@ -134,15 +163,29 @@ export type MutationAddSuperArgs = {
 };
 
 
+export type MutationConfirmUserIsSellerArgs = {
+  id: Scalars['ID'];
+};
+
+
 export type MutationCreateBrandArgs = {
   name: Scalars['String'];
   thumbnail: Scalars['String'];
 };
 
 
+export type MutationCreateCartArgs = {
+  input: CartInput;
+};
+
+
 export type MutationCreateCategoryArgs = {
   name: Scalars['String'];
-  path?: InputMaybe<Scalars['String']>;
+};
+
+
+export type MutationCreateOrderArgs = {
+  input: OrderInput;
 };
 
 
@@ -206,13 +249,19 @@ export type MutationUpdateProductArgs = {
 
 
 export type MutationUpdateRoleArgs = {
-  status: Scalars['String'];
+  status: Role;
 };
 
 
 export type MutationUpdateStoreStatusArgs = {
   id: Scalars['ID'];
   status: StoreStatus;
+};
+
+
+export type MutationUpdateUserAccountStatusArgs = {
+  id: Scalars['ID'];
+  status: AccountStatus;
 };
 
 export type Node = {
@@ -229,6 +278,34 @@ export type NumberQueryOperatorInput = {
   lte?: InputMaybe<Scalars['String']>;
   ne?: InputMaybe<Scalars['String']>;
   nin?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+export type Order = {
+  __typename?: 'Order';
+  address: Scalars['String'];
+  cart?: Maybe<Cart>;
+  city: Scalars['String'];
+  country: Scalars['String'];
+  delivery: Scalars['String'];
+  estimatedTime: Scalars['String'];
+  id: Scalars['ID'];
+  status: Scalars['String'];
+  traking: Scalars['String'];
+  user: Scalars['String'];
+  zipCode: Scalars['Int'];
+};
+
+export type OrderInput = {
+  address: Scalars['String'];
+  cart: Scalars['ID'];
+  city: Scalars['String'];
+  country: Scalars['String'];
+  delivery: Scalars['String'];
+  estimatedTime: Scalars['String'];
+  status: Scalars['String'];
+  traking: Scalars['String'];
+  user: Scalars['String'];
+  zipCode: Scalars['Int'];
 };
 
 export type PageInfo = {
@@ -253,8 +330,7 @@ export type Product = {
   price: Scalars['Float'];
   stock: Scalars['Int'];
   store: Store;
-  thumbnails: Array<Maybe<Scalars['String']>>;
-  variants: Array<Maybe<Variants>>;
+  thumbnails: Array<Maybe<Media>>;
 };
 
 export type ProductInput = {
@@ -265,16 +341,19 @@ export type ProductInput = {
   name: Scalars['String'];
   price: Scalars['Float'];
   store: Scalars['ID'];
-  thumbnails: Array<InputMaybe<Scalars['String']>>;
-  variants: Array<InputMaybe<VariantsInput>>;
+  thumbnails: Array<InputMaybe<Scalars['Upload']>>;
 };
 
 export type Query = {
   __typename?: 'Query';
   brand?: Maybe<Brand>;
   brands: Array<Maybe<Brand>>;
+  cart?: Maybe<Cart>;
+  carts?: Maybe<Array<Maybe<Cart>>>;
   categories: Array<Maybe<Category>>;
   getAll?: Maybe<Array<Super>>;
+  getCustomers: Array<Maybe<Customer>>;
+  orders?: Maybe<Order>;
   product?: Maybe<Product>;
   products?: Maybe<Array<Maybe<Product>>>;
   store?: Maybe<Store>;
@@ -284,6 +363,16 @@ export type Query = {
 
 export type QueryBrandArgs = {
   id: Scalars['ID'];
+};
+
+
+export type QueryCartArgs = {
+  id: Scalars['String'];
+};
+
+
+export type QueryOrdersArgs = {
+  user: Scalars['String'];
 };
 
 
@@ -355,6 +444,8 @@ export type SuperInput = {
 
 export type User = {
   __typename?: 'User';
+  AccountStatus: AccountStatus;
+  Store?: Maybe<Store>;
   email: Scalars['String'];
   firstName: Scalars['String'];
   id: Scalars['ID'];
@@ -367,21 +458,6 @@ export type UserInput = {
   firstName: Scalars['String'];
   lastName: Scalars['String'];
   password: Scalars['String'];
-};
-
-export type Variants = {
-  __typename?: 'Variants';
-  dimensions: Array<Maybe<Dimensions>>;
-  price: Scalars['Float'];
-  sku: Scalars['String'];
-  stock: Scalars['Int'];
-};
-
-export type VariantsInput = {
-  dimensions: Array<InputMaybe<DimensionsInput>>;
-  price: Scalars['Float'];
-  sku: Scalars['String'];
-  stock: Scalars['Int'];
 };
 
 export type InputCustomer = {
@@ -406,23 +482,30 @@ export type ResponseSub = {
   subscription?: Maybe<Scalars['String']>;
 };
 
+export type StoreFragment = { __typename?: 'Store', id: string, name: string, thumbnail: string };
+
 export type CategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type CategoriesQuery = { __typename?: 'Query', categories: Array<{ __typename?: 'Category', id: string, name: string, path?: string | null } | null> };
+export type CategoriesQuery = { __typename?: 'Query', categories: Array<{ __typename?: 'Category', id: string, name: string } | null> };
 
-export type GetProductsThumbnailsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GetProductsThumbnailsQuery = { __typename?: 'Query', products?: Array<{ __typename?: 'Product', id: string, name: string, thumbnails: Array<string | null>, price: number, discount: number } | null> | null };
+export type ProductsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
+export type ProductsQuery = { __typename?: 'Query', products?: Array<{ __typename?: 'Product', id: string, name: string, price: number, discount: number, description: string, stock: number, thumbnails: Array<{ __typename?: 'Media', alt: string, id: string, src: string, type: string } | null>, brand?: { __typename?: 'Brand', id: string, name: string, thumbnail: string } | null, category: Array<{ __typename?: 'Category', id: string, name: string } | null>, store: { __typename?: 'Store', id: string, name: string, thumbnail: string } } | null> | null };
+
+export const StoreFragmentDoc = gql`
+    fragment store on Store {
+  id
+  name
+  thumbnail
+}
+    `;
 export const CategoriesDocument = gql`
     query Categories {
   categories {
     id
     name
-    path
   }
 }
     `;
@@ -453,41 +536,60 @@ export function useCategoriesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions
 export type CategoriesQueryHookResult = ReturnType<typeof useCategoriesQuery>;
 export type CategoriesLazyQueryHookResult = ReturnType<typeof useCategoriesLazyQuery>;
 export type CategoriesQueryResult = Apollo.QueryResult<CategoriesQuery, CategoriesQueryVariables>;
-export const GetProductsThumbnailsDocument = gql`
-    query getProductsThumbnails {
+export const ProductsDocument = gql`
+    query Products {
   products {
     id
     name
-    thumbnails
     price
     discount
+    description
+    thumbnails {
+      alt
+      id
+      src
+      type
+    }
+    brand {
+      id
+      name
+      thumbnail
+    }
+    category {
+      id
+      name
+    }
+    store {
+      ...store
+    }
+    stock
   }
 }
-    `;
+    ${StoreFragmentDoc}`;
 
 /**
- * __useGetProductsThumbnailsQuery__
+ * __useProductsQuery__
  *
- * To run a query within a React component, call `useGetProductsThumbnailsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetProductsThumbnailsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useProductsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProductsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetProductsThumbnailsQuery({
+ * const { data, loading, error } = useProductsQuery({
  *   variables: {
  *   },
  * });
  */
-export function useGetProductsThumbnailsQuery(baseOptions?: Apollo.QueryHookOptions<GetProductsThumbnailsQuery, GetProductsThumbnailsQueryVariables>) {
+export function useProductsQuery(baseOptions?: Apollo.QueryHookOptions<ProductsQuery, ProductsQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetProductsThumbnailsQuery, GetProductsThumbnailsQueryVariables>(GetProductsThumbnailsDocument, options);
+        return Apollo.useQuery<ProductsQuery, ProductsQueryVariables>(ProductsDocument, options);
       }
-export function useGetProductsThumbnailsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetProductsThumbnailsQuery, GetProductsThumbnailsQueryVariables>) {
+export function useProductsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProductsQuery, ProductsQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetProductsThumbnailsQuery, GetProductsThumbnailsQueryVariables>(GetProductsThumbnailsDocument, options);
+          return Apollo.useLazyQuery<ProductsQuery, ProductsQueryVariables>(ProductsDocument, options);
         }
-export type GetProductsThumbnailsQueryHookResult = ReturnType<typeof useGetProductsThumbnailsQuery>;
-export type GetProductsThumbnailsLazyQueryHookResult = ReturnType<typeof useGetProductsThumbnailsLazyQuery>;
-export type GetProductsThumbnailsQueryResult = Apollo.QueryResult<GetProductsThumbnailsQuery, GetProductsThumbnailsQueryVariables>;
+export type ProductsQueryHookResult = ReturnType<typeof useProductsQuery>;
+export type ProductsLazyQueryHookResult = ReturnType<typeof useProductsLazyQuery>;
+export type ProductsQueryResult = Apollo.QueryResult<ProductsQuery, ProductsQueryVariables>;
