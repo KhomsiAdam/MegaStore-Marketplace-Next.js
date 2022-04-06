@@ -11,7 +11,7 @@ import { NextPage } from 'next';
 import { defaultLayout } from 'layouts';
 import { NextPageWithLayout } from '@/interfaces/index';
 import { ThemeProvider } from '@mui/material/styles';
-import theme from './theme';
+import mainTheme from '@/assets/theme/mainTheme';
 
 type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
@@ -27,7 +27,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
 
   return (
     <ApolloProvider client={apolloClient}>
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={mainTheme}>
         <ModalProvider>
           {
             // @ts-ignore
