@@ -189,6 +189,11 @@ export type MutationCreateOrderArgs = {
 };
 
 
+export type MutationCreateOrderArgs = {
+  input: OrderInput;
+};
+
+
 export type MutationCreateProductArgs = {
   input: ProductInput;
 };
@@ -352,7 +357,10 @@ export type Query = {
   carts?: Maybe<Array<Maybe<Cart>>>;
   categories: Array<Maybe<Category>>;
   getAll?: Maybe<Array<Super>>;
+<<<<<<< HEAD
   getCustomers: Array<Maybe<Customer>>;
+=======
+>>>>>>> 819e21fd422514e278da3c09c4e316b61320df70
   orders?: Maybe<Order>;
   product?: Maybe<Product>;
   products?: Maybe<Array<Maybe<Product>>>;
@@ -482,7 +490,28 @@ export type ResponseSub = {
   subscription?: Maybe<Scalars['String']>;
 };
 
+<<<<<<< HEAD
 export type StoreFragment = { __typename?: 'Store', id: string, name: string, thumbnail: string };
+=======
+export type UserFragment = { __typename?: 'User', id: string, role: Role };
+
+export type LoginMutationVariables = Exact<{
+  email: Scalars['String'];
+  password: Scalars['String'];
+}>;
+
+
+export type LoginMutation = { __typename?: 'Mutation', login?: { __typename?: 'AuthPayload', token: string, user: { __typename?: 'User', id: string, role: Role } } | null };
+
+export type RegisterMutationVariables = Exact<{
+  input?: InputMaybe<UserInput>;
+}>;
+
+
+export type RegisterMutation = { __typename?: 'Mutation', register?: { __typename?: 'AuthPayload', token: string, user: { __typename?: 'User', id: string, role: Role } } | null };
+
+export type CategoriesQueryVariables = Exact<{ [key: string]: never; }>;
+>>>>>>> 819e21fd422514e278da3c09c4e316b61320df70
 
 export type CategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -492,6 +521,7 @@ export type CategoriesQuery = { __typename?: 'Query', categories: Array<{ __type
 export type ProductsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
+<<<<<<< HEAD
 export type ProductsQuery = { __typename?: 'Query', products?: Array<{ __typename?: 'Product', id: string, name: string, price: number, discount: number, description: string, stock: number, thumbnails: Array<{ __typename?: 'Media', alt: string, id: string, src: string, type: string } | null>, brand?: { __typename?: 'Brand', id: string, name: string, thumbnail: string } | null, category: Array<{ __typename?: 'Category', id: string, name: string } | null>, store: { __typename?: 'Store', id: string, name: string, thumbnail: string } } | null> | null };
 
 export const StoreFragmentDoc = gql`
@@ -501,6 +531,87 @@ export const StoreFragmentDoc = gql`
   thumbnail
 }
     `;
+=======
+export const UserFragmentDoc = gql`
+    fragment user on User {
+  id
+  role
+}
+    `;
+export const LoginDocument = gql`
+    mutation Login($email: String!, $password: String!) {
+  login(email: $email, password: $password) {
+    token
+    user {
+      ...user
+    }
+  }
+}
+    ${UserFragmentDoc}`;
+export type LoginMutationFn = Apollo.MutationFunction<LoginMutation, LoginMutationVariables>;
+
+/**
+ * __useLoginMutation__
+ *
+ * To run a mutation, you first call `useLoginMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useLoginMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [loginMutation, { data, loading, error }] = useLoginMutation({
+ *   variables: {
+ *      email: // value for 'email'
+ *      password: // value for 'password'
+ *   },
+ * });
+ */
+export function useLoginMutation(baseOptions?: Apollo.MutationHookOptions<LoginMutation, LoginMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument, options);
+      }
+export type LoginMutationHookResult = ReturnType<typeof useLoginMutation>;
+export type LoginMutationResult = Apollo.MutationResult<LoginMutation>;
+export type LoginMutationOptions = Apollo.BaseMutationOptions<LoginMutation, LoginMutationVariables>;
+export const RegisterDocument = gql`
+    mutation Register($input: UserInput) {
+  register(input: $input) {
+    token
+    user {
+      ...user
+    }
+  }
+}
+    ${UserFragmentDoc}`;
+export type RegisterMutationFn = Apollo.MutationFunction<RegisterMutation, RegisterMutationVariables>;
+
+/**
+ * __useRegisterMutation__
+ *
+ * To run a mutation, you first call `useRegisterMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRegisterMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [registerMutation, { data, loading, error }] = useRegisterMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<RegisterMutation, RegisterMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument, options);
+      }
+export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
+export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
+export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
+>>>>>>> 819e21fd422514e278da3c09c4e316b61320df70
 export const CategoriesDocument = gql`
     query Categories {
   categories {
