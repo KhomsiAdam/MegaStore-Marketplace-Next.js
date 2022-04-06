@@ -12,11 +12,12 @@ import {
   CategoriesQueryVariables,
   ProductsDocument,
   ProductsQueryVariables,
+  ProductsQuery
 } from "@/graphql/generated/graphql";
 import apolloClient from "@/graphql/apollo";
 import { GetServerSideProps } from "next";
 
-const Home: NextPage<CategoriesQueryVariables, GetProductsThumbnailsQueryVariables> = ({ categories, products }) => {
+const Home: NextPage<CategoriesQueryVariables, ProductsQuery> = ({ categories, products }) => {
   const { toggleModal, setForm } = useContext(ModalContext);
   const handleToggle = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
