@@ -92,7 +92,7 @@ const Home: NextPage<CategoriesQueryVariables, ProductsQuery> = ({ categories, p
           </div>
         </div>
       </div>
-      <ProductsThumbnails productsThumbnails={products} />
+      <ProductsThumbnails products={products} />
     </>
   );
 };
