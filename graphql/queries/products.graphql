@@ -1,10 +1,5 @@
 query Products {
   products {
-    brand {
-      id
-      name
-      thumbnail
-    }
     category {
       id
       name
