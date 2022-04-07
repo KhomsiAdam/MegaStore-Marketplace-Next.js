@@ -1,62 +1,21 @@
-import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Image from 'next/image';
-import {
-  // useContext,
-  useEffect,
-  useState,
-} from 'react';
-import { RadioGroup } from '@headlessui/react';
+import { useEffect } from 'react';
 import { Rating } from '@mui/material';
-import { Colors, Product } from '@/interfaces/index';
-// import CartContext from '@/context/cart/CartContext';
+import { GetServerSideProps, NextPage } from 'next';
+import {
+  GetProductByIdDocument,
+  GetProductByIdQuery,
+} from '@/graphql/generated/graphql';
+import apolloClient from '@/graphql/apollo';
 
-// Importing static products list
-import products from '@/data/products.json';
-// const product = products[0];
+const ProductDetails: NextPage<GetProductByIdQuery> = ({ product }) => {
 
-// const ProductDetails = ({ productElement }: any) => {
-const ProductDetails = () => {
-  // const { addToCart } = useContext(CartContext);
-
-  const router = useRouter();
-  const { query, isReady } = router;
-  const { slug } = query;
-  // Product details
-  const [product, setProduct] = useState<Product>();
-  // Product colors
-  // const [selectedColor, setSelectedColor] = useState<Array<Colors>>();
-  // Product quantity counter
-  const [count, setCount] = useState(1);
-  const decrementCount = () => {
-    if (count > 1) setCount(count - 1);
-  };
-  const incrementCount = () => {
-    setCount(count + 1);
-  };
-
-  // Setting class names from colors array
-  // function classNames(...classes: any) {
-  //   return classes.filter(Boolean).join(" ");
-  // }
-
-  // Check product uuid with slug
   useEffect(() => {
-    if (isReady) {
-      console.log(slug);
-      products.map((elem: any) => {
-        if (elem?.name === slug) {
-          setProduct(elem);
-          // console.log(elem?.colors);
-          // setSelectedColor(elem?.colors);
-        } else {
-          //@ts-ignore
-          setProduct(products[0]);
-          // setSelectedColor(products[0]?.colors);
-        }
-      });
-    }
-  }, [isReady, router, slug]);
+    console.log(product);
+  }, [product]);
+
+  // const { addToCart } = useContext(CartContext);
 
   return (
     <>
@@ -71,7 +30,7 @@ const ProductDetails = () => {
               height='500px'
               width='500px'
               className='object-cover object-center w-[500px] h-[500px] border border-gray-200 rounded lg:w-1/2'
-              src={product?.thumbnails[0] || '/images/products/default.png'}
+              src={product?.thumbnails[0]?.src || '/images/products/default.png'}
             />
             <div className='w-full mt-6 lg:w-1/2 lg:pl-10 lg:py-6 lg:mt-0'>
               <h2 className='text-sm tracking-widest text-gray-500 title-font'>
@@ -91,91 +50,19 @@ const ProductDetails = () => {
                   <span className='ml-3 text-gray-600'>4 Reviews</span>
                 </span>
                 <span className='flex py-2 pl-3 ml-3 border-l-2 border-gray-200'>
-                  <a className='font-bold text-primary-500'>{product?.store}</a>
+                  <a className='font-bold text-primary-500'>{product?.store?.name}</a>
                 </span>
               </div>
               <div className='mx-6 leading-relaxed'>{product?.description}</div>
               <div className='flex flex-col pb-5 mt-6 mb-5 border-b-2 border-gray-200 md:items-center md:flex-row'>
-                {/* <form className="pb-4 md:pb-0">
-                  <div>
-                    <h3 className="text-sm font-medium text-gray-900">Color</h3>
-
-                    <RadioGroup
-                      value={selectedColor}
-                      onChange={setSelectedColor}
-                      className="mt-4"
-                    >
-                      <RadioGroup.Label className="sr-only">
-                        Choose a color
-                      </RadioGroup.Label>
-                      <div className="flex items-center space-x-3">
-                        {product?.colors.map((color) => (
-                          <RadioGroup.Option
-                            key={color.name}
-                            value={color}
-                            className={({ active, checked }) =>
-                              classNames(
-                                color.selectedClass,
-                                active && checked ? "ring ring-offset-1" : "",
-                                !active && checked ? "ring-2" : "",
-                                "m-0 relative p-1 rounded-[5px] flex items-center justify-center cursor-pointer focus:outline-none"
-                              )
-                            }
-                          >
-                            <RadioGroup.Label as="p" className="sr-only">
-                              {color.name}
-                            </RadioGroup.Label>
-                            <span
-                              aria-hidden="true"
-                              className={classNames(
-                                color.class,
-                                "h-8 w-12 border border-black border-opacity-10 rounded-[5px]"
-                              )}
-                            />
-                          </RadioGroup.Option>
-                        ))}
-                      </div>
-                    </RadioGroup>
-                  </div>
-                </form> */}
               </div>
               <div className='flex items-center justify-between w-full'>
                 <span className='text-2xl font-medium text-gray-900 title-font'>
                   {product?.price} MAD
                 </span>
-                {/* <div className='relative flex flex-row h-10 mt-1 bg-transparent rounded-lg'>
-                  <button
-                    onClick={decrementCount}
-                    data-action='decrement'
-                    className='w-[100px] h-full text-gray-100 bg-gray-500 rounded-l outline-none cursor-pointer hover:bg-primary-500'
-                  >
-                    <span className='m-auto text-2xl font-thin leading-none'>
-                      −
-                    </span>
-                  </button>
-                  <input
-                    type='text'
-                    name='clicks'
-                    value={count}
-                    onChange={(event) => {
-                      const value = Number(event.target.value);
-                      setCount(value);
-                    }}
-                    className='flex items-center w-full font-semibold text-center text-gray-700 bg-gray-300 outline-none focus:outline-none text-md hover:text-black focus:text-black md:text-basecursor-default'
-                  />
-                  <button
-                    onClick={incrementCount}
-                    data-action='increment'
-                    className='w-[100px] h-full text-gray-100 bg-gray-500 rounded-r cursor-pointer hover:bg-primary-500'
-                  >
-                    <span className='m-auto text-2xl font-thin leading-none'>
-                      +
-                    </span>
-                  </button>
-                </div> */}
                 <button
                   className='flex px-6 py-2 text-white border-0 rounded bg-primary-500 focus:outline-none hover:bg-primary-600'
-                  // onClick={() => addToCart(productElement)}
+                  // onClick={() => addToCart(product)}
                 >
                   Add to cart
                 </button>
@@ -201,3 +88,20 @@ const ProductDetails = () => {
 };
 
 export default ProductDetails;
+
+export const getServerSideProps: GetServerSideProps = async (context: any) => {
+  const { slug } = context.params;
+
+  const { data: productData } = await apolloClient.query({
+    query: GetProductByIdDocument,
+    variables: {
+      getProductByIdId: slug,
+    },
+  });
+
+  return {
+    props: {
+      product: productData.product,
+    },
+  };
+};

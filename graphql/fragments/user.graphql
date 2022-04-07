@@ -26,11 +26,7 @@ fragment userFields on User {
         type
       }
       discount
-      brand {
-        id
-        name
-        thumbnail
-      }
+      brand
       category {
         id
         name

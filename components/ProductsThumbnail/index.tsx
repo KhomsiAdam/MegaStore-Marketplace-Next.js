@@ -3,10 +3,10 @@ import Link from 'next/link';
 
 export const ProductThumbnail = ({ product }: any) => {
   return (
-    <Link href={`/product/${product?.name}`} passHref>
+    <Link href={`/product/${product?.id}`} passHref>
       <a className='flex flex-col cursor-pointer'>
         <Image
-          src={product?.thumbnails[0]}
+          src={product?.thumbnails[0].src}
           width={200}
           height={200}
           alt={product?.name}

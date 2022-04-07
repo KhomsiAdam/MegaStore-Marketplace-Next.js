@@ -6,11 +6,13 @@ import { SHOW_HIDE_CART, ADD_TO_CART, REMOVE_ITEM } from "../Types";
 interface Cart {
   showCart: boolean;
   cartItems: Array<any>;
+  addToCart: (product: any) => void;
 }
 
 const initalState = {
   showCart: false,
   cartItems: [],
+  addToCart: () => {},
 };
 
 const CartContext = createContext<Cart>(initalState);
@@ -23,9 +25,9 @@ export const CartState: FC = ({ children }) => {
 
   const [state, dispatch] = useReducer(CartReducer, initalState);
 
-  // const addToCart = (item: any) => {
-  //   dispatch({ type: ADD_TO_CART, payload: item });
-  // };
+  const addToCart = (item: any) => {
+    dispatch({ type: ADD_TO_CART, payload: item });
+  };
 
   // const showHideCart = () => {
   //   dispatch({ type: SHOW_HIDE_CART });
@@ -40,7 +42,7 @@ export const CartState: FC = ({ children }) => {
       value={{
         showCart: state.showCart,
         cartItems: state.cartItems,
-        // addToCart,
+        addToCart,
         // showHideCart,
         // removeItem,
       }}

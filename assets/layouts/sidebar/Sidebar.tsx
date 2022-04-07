@@ -15,6 +15,7 @@ import {
   ListItemText,
   Skeleton,
 } from "@mui/material";
+//@ts-ignore
 import FeatherIcon from "feather-icons-react";
 import LogoIcon from "../logo/LogoIcon";
 import Menuitems from "./MenuItems";
@@ -83,7 +84,7 @@ const Sidebar = ({
             ))
           ) : (
             <div className="inline-block">
-              <div className="rounded-xl bg-grey-500 w-36 h-48 shadow-lg relative">
+              <div className="relative h-48 shadow-lg rounded-xl bg-grey-500 w-36">
                 <Skeleton
                   variant="rectangular"
                   className="rounded-xl"

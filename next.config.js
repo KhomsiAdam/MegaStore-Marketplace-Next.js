@@ -12,6 +12,9 @@ const settings = {
   // devIndicators: {
   //   autoPrerender: false,
   // },
+  images: {
+    domains: ['babelmdina.blob.core.windows.net'],
+  },
   pwa: {
     dest: 'public',
     // mode: 'production',

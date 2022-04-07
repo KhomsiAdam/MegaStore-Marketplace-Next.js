@@ -23,11 +23,7 @@ fragment store on Store {
         id
         name
       }
-      brand {
-        id
-        name
-        thumbnail
-      }
+      brand
       stock
     }
     status
