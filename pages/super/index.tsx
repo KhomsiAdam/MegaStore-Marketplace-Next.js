@@ -19,51 +19,51 @@ import { useRef, useState } from 'react';
 
 import { gql, useMutation } from '@apollo/client';
 
-function InitialFocus() {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+// function InitialFocus() {
+//   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const initialRef = useRef();
-  const finalRef = useRef();
+//   const initialRef = useRef();
+//   const finalRef = useRef();
 
-  return (
-    <>
-      <Button onClick={onOpen}>Open Modal</Button>
-      <Button ml={4} ref={finalRef}>
-        I'll receive focus on close
-      </Button>
+//   return (
+//     <>
+//       <Button onClick={onOpen}>Open Modal</Button>
+//       <Button ml={4} ref={finalRef}>
+//         I'll receive focus on close
+//       </Button>
 
-      <Modal
-        initialFocusRef={initialRef}
-        finalFocusRef={finalRef}
-        isOpen={isOpen}
-        onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Create your account</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody pb={6}>
-            <FormControl>
-              <FormLabel>First name</FormLabel>
-              <Input ref={initialRef} placeholder='First name' />
-            </FormControl>
+//       <Modal
+//         initialFocusRef={initialRef}
+//         finalFocusRef={finalRef}
+//         isOpen={isOpen}
+//         onClose={onClose}>
+//         <ModalOverlay />
+//         <ModalContent>
+//           <ModalHeader>Create your account</ModalHeader>
+//           <ModalCloseButton />
+//           <ModalBody pb={6}>
+//             <FormControl>
+//               <FormLabel>First name</FormLabel>
+//               <Input ref={initialRef} placeholder='First name' />
+//             </FormControl>
 
-            <FormControl mt={4}>
-              <FormLabel>Last name</FormLabel>
-              <Input placeholder='Last name' />
-            </FormControl>
-          </ModalBody>
+//             <FormControl mt={4}>
+//               <FormLabel>Last name</FormLabel>
+//               <Input placeholder='Last name' />
+//             </FormControl>
+//           </ModalBody>
 
-          <ModalFooter>
-            <Button colorScheme='blue' mr={3}>
-              Save
-            </Button>
-            <Button onClick={onClose}>Cancel</Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-    </>
-  );
-}
+//           <ModalFooter>
+//             <Button colorScheme='blue' mr={3}>
+//               Save
+//             </Button>
+//             <Button onClick={onClose}>Cancel</Button>
+//           </ModalFooter>
+//         </ModalContent>
+//       </Modal>
+//     </>
+//   );
+// }
 
 export const Page: NextPage = ({}) => {
   return (
@@ -86,18 +86,50 @@ export const getServerSideProps = async () => {
 export default Page;
 
 const MUTATION = gql`
-  mutation ($file: Upload!) {
-    uploadFile(file: $file) {
-      success
+  mutation CreateStore(
+    $name: String!
+    $thumbnail: [Upload]!
+    $document_verification: [Upload]!
+  ) {
+    createStore(
+      name: $name
+      thumbnail: $thumbnail
+      document_verification: $document_verification
+    ) {
+      id
+      thumbnail {
+        id
+        src
+        alt
+      }
     }
   }
 `;
 function UploadFile() {
-  const [mutate] = useMutation(MUTATION);
+  const [mutate, { data }] = useMutation(MUTATION, {
+    onCompleted: () => {
+      console.log('completed');
+    },
+  });
+  console.log(data);
 
   const onChange = async (e: any) => {
     const file = e.target.files[0];
-    mutate({ variables: { file } });
+    console.log({
+      variables: {
+        name: 'store 51',
+        thumbnail: [file],
+        document_verification: [file],
+      },
+    });
+
+    mutate({
+      variables: {
+        name: 'store 51',
+        thumbnail: [file],
+        document_verification: [file],
+      },
+    });
   };
 
   return (
