@@ -188,7 +188,7 @@ export type MutationCreateProductArgs = {
 
 
 export type MutationCreateStoreArgs = {
-  document_verification?: InputMaybe<Scalars['Upload']>;
+  document_verification?: InputMaybe<Array<InputMaybe<Scalars['Upload']>>>;
   name: Scalars['String'];
   thumbnail: Array<InputMaybe<Scalars['Upload']>>;
 };
@@ -459,7 +459,7 @@ export type RegisterMutationVariables = Exact<{
 export type RegisterMutation = { __typename?: 'Mutation', register?: { __typename?: 'AuthPayload', token: string, user: { __typename?: 'User', id: string, firstName: string, lastName: string, email: string, role: Role, AccountStatus: AccountStatus, typeAccount?: TypeAccountEnum | null, isSeller: boolean, Store?: { __typename?: 'Store', id: string, name: string, status: StoreStatus, thumbnail: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, products: Array<{ __typename?: 'Product', id: string, name: string, description: string, price: number, discount: number, stock: number, thumbnails: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, brand?: { __typename?: 'Brand', id: string, name: string, thumbnail: string } | null, category: Array<{ __typename?: 'Category', id: string, name: string } | null> } | null> } | null } } | null };
 
 export type CreateStoreMutationVariables = Exact<{
-  documentVerification?: InputMaybe<Scalars['Upload']>;
+  documentVerification: Array<InputMaybe<Scalars['Upload']>> | InputMaybe<Scalars['Upload']>;
   thumbnail: Array<InputMaybe<Scalars['Upload']>> | InputMaybe<Scalars['Upload']>;
   name: Scalars['String'];
 }>;
@@ -640,7 +640,7 @@ export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
 export const CreateStoreDocument = gql`
-    mutation CreateStore($documentVerification: Upload, $thumbnail: [Upload]!, $name: String!) {
+    mutation CreateStore($documentVerification: [Upload]!, $thumbnail: [Upload]!, $name: String!) {
   createStore(
     document_verification: $documentVerification
     thumbnail: $thumbnail

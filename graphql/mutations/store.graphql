@@ -1,5 +1,5 @@
 mutation CreateStore(
-  $documentVerification: Upload
+  $documentVerification: [Upload]!
   $thumbnail: [Upload]!
   $name: String!
 ) {
