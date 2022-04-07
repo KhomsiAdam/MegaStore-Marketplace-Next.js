@@ -17,6 +17,8 @@ import {
 } from '@chakra-ui/react';
 import { useRef, useState } from 'react';
 
+import { gql, useMutation } from '@apollo/client';
+
 function InitialFocus() {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -66,9 +68,10 @@ function InitialFocus() {
 export const Page: NextPage = ({}) => {
   return (
     <>
-      <Button colorScheme='blue'>Button</Button>
-      <h1>Hello</h1>
-      <InitialFocus />
+      {/* <Button colorScheme='blue'>Button</Button> */}
+      {/* <h1>Hello</h1> */}
+      {/* <InitialFocus /> */}
+      <UploadFile />
     </>
   );
 };
@@ -81,3 +84,33 @@ export const getServerSideProps = async () => {
 };
 
 export default Page;
+
+const MUTATION = gql`
+  mutation ($file: Upload!) {
+    uploadFile(file: $file) {
+      success
+    }
+  }
+`;
+function UploadFile() {
+  const [mutate] = useMutation(MUTATION);
+
+  const onChange = async (e: any) => {
+    const file = e.target.files[0];
+    mutate({ variables: { file } });
+  };
+
+  return (
+    <input
+      onChange={onChange}
+      type='file'
+      className='block w-full text-sm text-slate-500
+   file:mr-4 file:py-2 file:px-4
+   file:rounded-full file:border-0
+   file:text-sm file:font-semibold
+   file:bg-violet-50 file:text-violet-700
+   hover:file:bg-violet-100
+ '
+    />
+  );
+}
