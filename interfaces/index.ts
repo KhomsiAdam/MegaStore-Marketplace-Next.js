@@ -18,8 +18,8 @@ export interface Categories {
 
 export interface SubCategories {
   id: number;
-  name: string;
   parent: string;
+  name: string;
   options: Array<string>;
 }
 
@@ -29,21 +29,16 @@ export interface Colors {
   selectedClass: string;
 }
 
+// temporary interface
 export interface Product {
-  id: number;
-  uuid: string;
+  id: string;
   name: string;
-  store: string;
-  price: string;
-  brand: string;
-  status: string;
-  SKU: string;
-  mainCategory: string;
-  category: string;
-  subCategory: string;
-  rating: number;
-  reviews: number;
-  images: Array<string>;
-  colors: Array<Colors>;
-  description: Array<string>;
+  store: any;
+  category: Array<any>;
+  brand: any;
+  price: number;
+  discount: number;
+  stock: number;
+  description: string;
+  thumbnails: any[];
 }
