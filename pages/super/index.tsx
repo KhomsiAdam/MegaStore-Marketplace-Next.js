@@ -106,6 +106,8 @@ const MUTATION = gql`
   }
 `;
 function UploadFile() {
+  const [preview, setPreview] = useState([]);
+
   const [mutate, { data }] = useMutation(MUTATION, {
     onCompleted: () => {
       console.log('completed');
@@ -115,21 +117,25 @@ function UploadFile() {
 
   const onChange = async (e: any) => {
     const file = e.target.files[0];
-    console.log({
-      variables: {
-        name: 'store 51',
-        thumbnail: [file],
-        document_verification: [file],
-      },
-    });
 
-    mutate({
-      variables: {
-        name: 'store 51',
-        thumbnail: [file],
-        document_verification: [file],
-      },
-    });
+    console.log({ [file.name]: file });
+
+    // setPreview([...preview, { [name]: file }]);
+    // console.log({
+    //   variables: {
+    //     name: 'store 51',
+    //     thumbnail: [file],
+    //     document_verification: [file],
+    //   },
+    // });
+
+    // mutate({
+    //   variables: {
+    //     name: 'store 51',
+    //     thumbnail: [file],
+    //     document_verification: [file],
+    //   },
+    // });
   };
 
   return (

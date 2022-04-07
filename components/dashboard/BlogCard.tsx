@@ -79,7 +79,7 @@ const BlogCard = () => {
                 sx={{
                   mt: "15px",
                 }}
-                color={blog.btncolor}
+                color="primary"
               >
                 Learn More
               </Button>

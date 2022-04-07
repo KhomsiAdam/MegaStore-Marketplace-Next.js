@@ -2,10 +2,11 @@ import React from "react";
 import { Card, CardContent, Typography, Box } from "@mui/material";
 import dynamic from "next/dynamic";
 import BaseCard from "../baseCard/BaseCard";
+import { ApexOptions } from "apexcharts";
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 const SalesOverview = () => {
-  const optionssalesoverview = {
+  const optionssalesoverview: ApexOptions = {
     grid: {
       show: true,
       borderColor: "transparent",
@@ -20,6 +21,7 @@ const SalesOverview = () => {
       bar: {
         horizontal: false,
         columnWidth: "42%",
+        // @ts-ignore
         endingShape: "rounded",
         borderRadius: 5,
       },

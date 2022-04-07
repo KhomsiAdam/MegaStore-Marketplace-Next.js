@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC } from "react";
 import {
   Typography,
   Box,
@@ -10,6 +10,10 @@ import {
   Chip,
 } from "@mui/material";
 import BaseCard from "../baseCard/BaseCard";
+import {
+  ProductsQuery,
+  ProductsQueryVariables,
+} from "@/graphql/generated/graphql";
 
 const products = [
   {
@@ -50,7 +54,7 @@ const products = [
   },
 ];
 
-const ProductPerfomance = () => {
+const ProductPerfomance: FC<ProductsQuery> = ({ products }) => {
   return (
     <BaseCard title="Product Perfomance">
       <Table
@@ -90,8 +94,8 @@ const ProductPerfomance = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {products.map((product) => (
-            <TableRow key={product.name}>
+          {products && products!.map((product) => (
+            <TableRow key={product!.id}>
               <TableCell>
                 <Typography
                   sx={{
@@ -99,7 +103,7 @@ const ProductPerfomance = () => {
                     fontWeight: "500",
                   }}
                 >
-                  {product.id}
+                  {product!.name}
                 </Typography>
               </TableCell>
               <TableCell>
@@ -116,7 +120,7 @@ const ProductPerfomance = () => {
                         fontWeight: "600",
                       }}
                     >
-                      {product.name}
+                      {product!.description}
                     </Typography>
                     <Typography
                       color="textSecondary"
@@ -124,14 +128,14 @@ const ProductPerfomance = () => {
                         fontSize: "13px",
                       }}
                     >
-                      {product.post}
+                      {product!.price}
                     </Typography>
                   </Box>
                 </Box>
               </TableCell>
               <TableCell>
                 <Typography color="textSecondary" variant="h6">
-                  {product.pname}
+                  {product!.category}
                 </Typography>
               </TableCell>
               <TableCell>
@@ -139,15 +143,15 @@ const ProductPerfomance = () => {
                   sx={{
                     pl: "4px",
                     pr: "4px",
-                    backgroundColor: product.pbg,
+                    backgroundColor: product!.discount,
                     color: "#fff",
                   }}
                   size="small"
-                  label={product.priority}
+                  label={product!.thumbnails[0]?.alt}
                 ></Chip>
               </TableCell>
               <TableCell align="right">
-                <Typography variant="h6">${product.budget}k</Typography>
+                <Typography variant="h6">${product!.price}k</Typography>
               </TableCell>
             </TableRow>
           ))}
