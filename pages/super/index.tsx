@@ -106,7 +106,7 @@ const MUTATION = gql`
   }
 `;
 function UploadFile() {
-  const [preview, setPreview] = useState([]);
+  const [preview, setPreview] = useState<any>([]);
 
   const [mutate, { data }] = useMutation(MUTATION, {
     onCompleted: () => {
@@ -116,11 +116,18 @@ function UploadFile() {
   console.log(data);
 
   const onChange = async (e: any) => {
-    const file = e.target.files[0];
+    const files = e.target.files;
 
-    console.log({ [file.name]: file });
+    const image_preview = [...files].map((file: any) => {
+      return { [file.name]: URL.createObjectURL(file) };
+    });
 
-    // setPreview([...preview, { [name]: file }]);
+    setPreview((prev: any) => [...prev, ...image_preview]);
+
+    // const image_preview = { [file.name]: URL.createObjectURL(file) };
+
+    // console.log(image_preview);
+
     // console.log({
     //   variables: {
     //     name: 'store 51',
@@ -139,16 +146,18 @@ function UploadFile() {
   };
 
   return (
-    <input
-      onChange={onChange}
-      type='file'
-      className='block w-full text-sm text-slate-500
+    <div>
+      <input
+        onChange={onChange}
+        type='file'
+        className='block w-full text-sm text-slate-500
    file:mr-4 file:py-2 file:px-4
    file:rounded-full file:border-0
    file:text-sm file:font-semibold
    file:bg-violet-50 file:text-violet-700
    hover:file:bg-violet-100
  '
-    />
+      />
+    </div>
   );
 }
