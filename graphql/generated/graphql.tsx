@@ -56,20 +56,6 @@ export enum CacheControlScope {
   Public = 'PUBLIC'
 }
 
-export type Cart = {
-  __typename?: 'Cart';
-  amount: Scalars['Float'];
-  id: Scalars['ID'];
-  products?: Maybe<Array<Maybe<Product>>>;
-  user: Scalars['String'];
-};
-
-export type CartInput = {
-  amount: Scalars['Float'];
-  products: Array<Scalars['ID']>;
-  user: Scalars['String'];
-};
-
 export type Category = {
   __typename?: 'Category';
   id: Scalars['ID'];
@@ -128,9 +114,7 @@ export type Mutation = {
   addSuper: Super;
   confirmUserIsSeller?: Maybe<User>;
   createBrand: Brand;
-  createCart: Cart;
   createCategory: Category;
-  createOrder: Order;
   createProduct: Product;
   createStore: Store;
   deleteBrand?: Maybe<Brand>;
@@ -173,18 +157,8 @@ export type MutationCreateBrandArgs = {
 };
 
 
-export type MutationCreateCartArgs = {
-  input: CartInput;
-};
-
-
 export type MutationCreateCategoryArgs = {
   name: Scalars['String'];
-};
-
-
-export type MutationCreateOrderArgs = {
-  input: OrderInput;
 };
 
 
@@ -274,34 +248,6 @@ export type NumberQueryOperatorInput = {
   nin?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
-export type Order = {
-  __typename?: 'Order';
-  address: Scalars['String'];
-  cart?: Maybe<Cart>;
-  city: Scalars['String'];
-  country: Scalars['String'];
-  delivery: Scalars['String'];
-  estimatedTime: Scalars['String'];
-  id: Scalars['ID'];
-  status: Scalars['String'];
-  traking: Scalars['String'];
-  user: Scalars['String'];
-  zipCode: Scalars['Int'];
-};
-
-export type OrderInput = {
-  address: Scalars['String'];
-  cart: Scalars['ID'];
-  city: Scalars['String'];
-  country: Scalars['String'];
-  delivery: Scalars['String'];
-  estimatedTime: Scalars['String'];
-  status: Scalars['String'];
-  traking: Scalars['String'];
-  user: Scalars['String'];
-  zipCode: Scalars['Int'];
-};
-
 export type PageInfo = {
   __typename?: 'PageInfo';
   hasNextPage: Scalars['Boolean'];
@@ -342,12 +288,9 @@ export type Query = {
   __typename?: 'Query';
   brand?: Maybe<Brand>;
   brands: Array<Maybe<Brand>>;
-  cart?: Maybe<Cart>;
-  carts?: Maybe<Array<Maybe<Cart>>>;
   categories: Array<Maybe<Category>>;
   getAll?: Maybe<Array<Super>>;
   getCustomers: Array<Maybe<Customer>>;
-  orders?: Maybe<Order>;
   product?: Maybe<Product>;
   products?: Maybe<Array<Maybe<Product>>>;
   store?: Maybe<Store>;
@@ -357,16 +300,6 @@ export type Query = {
 
 export type QueryBrandArgs = {
   id: Scalars['ID'];
-};
-
-
-export type QueryCartArgs = {
-  id: Scalars['String'];
-};
-
-
-export type QueryOrdersArgs = {
-  user: Scalars['String'];
 };
 
 
