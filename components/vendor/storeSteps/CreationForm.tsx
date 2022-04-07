@@ -12,8 +12,29 @@ import {
   Button,
 } from "@mui/material";
 import BaseCard from "@/components/baseCard";
+import { useCreateStoreMutation } from "@/graphql/generated/graphql";
+import { useState } from "react";
 
 const CreationForm = () => {
+  const [store, setStore] = useState({
+    documentVerification: null,
+    thumbnail: null,
+    name: null,
+  });
+
+  const [mutate, data] = useCreateStoreMutation();
+
+  const createStoreSubmit = async () => {
+    const { data } = await mutate({
+      variables: {
+        documentVerification: store.documentVerification,
+        thumbnail: store.thumbnail,
+        name: store.name,
+      },
+    });
+    console.log(data);
+  };
+
   return (
     <Grid container spacing={0}>
       <Grid item xs={12} lg={12}>
@@ -83,7 +104,7 @@ const CreationForm = () => {
             </FormControl>
           </Stack>
           <br />
-          <Button variant="contained" mt={2}>
+          <Button variant="contained" mt={2} onClick={createStoreSubmit}>
             Submit
           </Button>
         </BaseCard>

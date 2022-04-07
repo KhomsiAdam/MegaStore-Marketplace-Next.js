@@ -1,0 +1,13 @@
+mutation CreateStore(
+  $documentVerification: Upload
+  $thumbnail: [Upload]!
+  $name: String!
+) {
+  createStore(
+    document_verification: $documentVerification
+    thumbnail: $thumbnail
+    name: $name
+  ) {
+    ...store
+  }
+}

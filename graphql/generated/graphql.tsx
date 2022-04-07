@@ -295,14 +295,14 @@ export type Product = {
 };
 
 export type ProductInput = {
-  brand: Scalars['ID'];
-  category: Array<InputMaybe<Scalars['ID']>>;
-  description: Scalars['String'];
-  discount: Scalars['Float'];
-  name: Scalars['String'];
-  price: Scalars['Float'];
-  store: Scalars['ID'];
-  thumbnails: Array<InputMaybe<Scalars['Upload']>>;
+  brand?: InputMaybe<Scalars['ID']>;
+  category?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  description?: InputMaybe<Scalars['String']>;
+  discount?: InputMaybe<Scalars['Float']>;
+  name?: InputMaybe<Scalars['String']>;
+  price?: InputMaybe<Scalars['Float']>;
+  store?: InputMaybe<Scalars['ID']>;
+  thumbnails?: InputMaybe<Array<InputMaybe<Scalars['Upload']>>>;
 };
 
 export type Query = {
@@ -459,6 +459,15 @@ export type RegisterMutationVariables = Exact<{
 
 
 export type RegisterMutation = { __typename?: 'Mutation', register?: { __typename?: 'AuthPayload', token: string, user: { __typename?: 'User', id: string, firstName: string, lastName: string, email: string, role: Role, AccountStatus: AccountStatus, typeAccount?: TypeAccountEnum | null, isSeller: boolean, Store?: { __typename?: 'Store', id: string, name: string, status: StoreStatus, thumbnail: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, products: Array<{ __typename?: 'Product', id: string, name: string, description: string, price: number, discount: number, stock: number, thumbnails: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, brand?: { __typename?: 'Brand', id: string, name: string, thumbnail: string } | null, category: Array<{ __typename?: 'Category', id: string, name: string } | null> } | null> } | null } } | null };
+
+export type CreateStoreMutationVariables = Exact<{
+  documentVerification?: InputMaybe<Scalars['Upload']>;
+  thumbnail: Array<InputMaybe<Scalars['Upload']>> | InputMaybe<Scalars['Upload']>;
+  name: Scalars['String'];
+}>;
+
+
+export type CreateStoreMutation = { __typename?: 'Mutation', createStore: { __typename?: 'Store', id: string, name: string, status: StoreStatus, thumbnail: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, products: Array<{ __typename?: 'Product', id: string, name: string, description: string, price: number, discount: number, stock: number, thumbnails: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, category: Array<{ __typename?: 'Category', id: string, name: string } | null>, brand?: { __typename?: 'Brand', id: string, name: string, thumbnail: string } | null } | null> } };
 
 export type CategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -638,6 +647,45 @@ export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<Reg
 export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
+export const CreateStoreDocument = gql`
+    mutation CreateStore($documentVerification: Upload, $thumbnail: [Upload]!, $name: String!) {
+  createStore(
+    document_verification: $documentVerification
+    thumbnail: $thumbnail
+    name: $name
+  ) {
+    ...store
+  }
+}
+    ${StoreFragmentDoc}`;
+export type CreateStoreMutationFn = Apollo.MutationFunction<CreateStoreMutation, CreateStoreMutationVariables>;
+
+/**
+ * __useCreateStoreMutation__
+ *
+ * To run a mutation, you first call `useCreateStoreMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateStoreMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createStoreMutation, { data, loading, error }] = useCreateStoreMutation({
+ *   variables: {
+ *      documentVerification: // value for 'documentVerification'
+ *      thumbnail: // value for 'thumbnail'
+ *      name: // value for 'name'
+ *   },
+ * });
+ */
+export function useCreateStoreMutation(baseOptions?: Apollo.MutationHookOptions<CreateStoreMutation, CreateStoreMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateStoreMutation, CreateStoreMutationVariables>(CreateStoreDocument, options);
+      }
+export type CreateStoreMutationHookResult = ReturnType<typeof useCreateStoreMutation>;
+export type CreateStoreMutationResult = Apollo.MutationResult<CreateStoreMutation>;
+export type CreateStoreMutationOptions = Apollo.BaseMutationOptions<CreateStoreMutation, CreateStoreMutationVariables>;
 export const CategoriesDocument = gql`
     query Categories {
   categories {
