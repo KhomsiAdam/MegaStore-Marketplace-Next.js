@@ -1,30 +1,29 @@
 fragment store on Store {
   id
+  name
+  thumbnail {
+    id
+    src
+    alt
+    type
+  }
+  products {
+    id
     name
-    thumbnail {
+    description
+    price
+    thumbnails {
       id
       src
       alt
       type
     }
-    products {
+    discount
+    category {
       id
       name
-      description
-      price
-      thumbnails {
-        id
-        src
-        alt
-        type
-      }
-      discount
-      category {
-        id
-        name
-      }
-      brand
-      stock
     }
-    status
+    stock
+  }
+  status
 }

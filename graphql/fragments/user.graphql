@@ -4,8 +4,8 @@ fragment userFields on User {
   lastName
   email
   role
-  AccountStatus
-  Store {
+  accountStatus
+  store {
     id
     name
     thumbnail {
