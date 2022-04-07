@@ -3,6 +3,8 @@ import Login from '@/components/Login';
 import Register from '@/components/Register';
 import ModalContext from '@/context/ModalContext';
 import CloseIcon from '@mui/icons-material/Close';
+import FeatherIcon from "feather-icons-react";
+
 import Image from 'next/image';
 import Logo from '@/public/megastore.svg';
 
@@ -64,6 +66,7 @@ export function AuthModal() {
                 onClick={handleToggle}
               >
                 <CloseIcon />
+                {/* <FeatherIcon icon="close" /> */}
               </button>
           </div>
         </div>
