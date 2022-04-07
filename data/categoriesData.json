@@ -1,42 +1,42 @@
 [
   {
     "id": 1,
-    "name": "Santé et Beauté",
+    "name": "Health and Wellness",
     "icon": "spa"
   },
   {
     "id": 2,
-    "name": "Vêtements & Chaussures",
+    "name": "Clothes",
     "icon": "checkroom"
   },
   {
     "id": 3,
-    "name": "Accessoires Mode",
+    "name": "Accessories",
     "icon": "diamond"
   },
   {
     "id": 4,
-    "name": "Maison & Cuisine",
+    "name": "Home and Kitchen",
     "icon": "cottage"
   },
   {
     "id": 5,
-    "name": "Téléphone & Tablette",
+    "name": "Phones and Tablets",
     "icon": "camera_alt"
   },
   {
     "id": 6,
-    "name": "Électroménager",
+    "name": "Home appliances",
     "icon": "kitchen"
   },
   {
     "id": 7,
-    "name": "Informatique",
+    "name": "Electronics",
     "icon": "devices"
   },
   {
     "id": 8,
-    "name": "Supermarché",
+    "name": "Supermarket",
     "icon": "shopping_bag"
   },
   {
@@ -46,7 +46,7 @@
   },
   {
     "id": 10,
-    "name": "Accessoires Auto & Moto",
+    "name": "Automotive",
     "icon": "directions_car"
   }
 ]

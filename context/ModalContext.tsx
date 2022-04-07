@@ -5,12 +5,16 @@ interface ModalOpenContext {
   toggleModal?: () => void;
   form: string;
   setForm: (form: string) => void;
+  token: string;
+  setToken: (token: string) => void;
 }
 
 const defaultState = {
   isModalOpen: false,
   form: 'login',
   setForm: () => {},
+  token: '',
+  setToken: () => {},
 };
 
 export const ModalContext = createContext<ModalOpenContext>(defaultState);
@@ -18,6 +22,7 @@ export const ModalContext = createContext<ModalOpenContext>(defaultState);
 export const ModalProvider: FC = ({ children }) => {
   const [isModalOpen, setIsModalOpen] = useState(defaultState.isModalOpen);
   const [form, setForm] = useState(defaultState.form);
+  const [token, setToken] = useState(defaultState.token);
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
@@ -30,6 +35,8 @@ export const ModalProvider: FC = ({ children }) => {
         toggleModal,
         form,
         setForm,
+        token,
+        setToken,
       }}
     >
       {children}

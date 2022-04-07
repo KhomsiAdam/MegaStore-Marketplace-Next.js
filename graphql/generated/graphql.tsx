@@ -443,8 +443,6 @@ export type StoreFragment = { __typename?: 'Store', id: string, name: string, st
 
 export type UserFieldsFragment = { __typename?: 'User', id: string, firstName: string, lastName: string, email: string, role: Role, AccountStatus: AccountStatus, typeAccount?: TypeAccountEnum | null, isSeller: boolean, Store?: { __typename?: 'Store', id: string, name: string, status: StoreStatus, thumbnail: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, products: Array<{ __typename?: 'Product', id: string, name: string, description: string, price: number, discount: number, stock: number, thumbnails: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, brand?: { __typename?: 'Brand', id: string, name: string, thumbnail: string } | null, category: Array<{ __typename?: 'Category', id: string, name: string } | null> } | null> } | null };
 
-export type UserFragment = { __typename?: 'User', id: string, role: Role };
-
 export type LoginMutationVariables = Exact<{
   email: Scalars['String'];
   password: Scalars['String'];
@@ -566,12 +564,6 @@ export const UserFieldsFragmentDoc = gql`
   }
   typeAccount
   isSeller
-}
-    `;
-export const UserFragmentDoc = gql`
-    fragment user on User {
-  id
-  role
 }
     `;
 export const LoginDocument = gql`
