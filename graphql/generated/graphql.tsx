@@ -32,6 +32,20 @@ export type Address = {
   state?: Maybe<Scalars['String']>;
 };
 
+export type Admin = {
+  __typename?: 'Admin';
+  email: Scalars['String'];
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  password: Scalars['String'];
+};
+
+export type AdminInput = {
+  email: Scalars['String'];
+  name: Scalars['String'];
+  password: Scalars['String'];
+};
+
 export type ArrayOperatorInput = {
   contains?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
@@ -55,20 +69,6 @@ export enum CacheControlScope {
   Private = 'PRIVATE',
   Public = 'PUBLIC'
 }
-
-export type Cart = {
-  __typename?: 'Cart';
-  amount: Scalars['Float'];
-  id: Scalars['ID'];
-  products?: Maybe<Array<Maybe<Product>>>;
-  user: Scalars['String'];
-};
-
-export type CartInput = {
-  amount: Scalars['Float'];
-  products: Array<Scalars['ID']>;
-  user: Scalars['String'];
-};
 
 export type Category = {
   __typename?: 'Category';
@@ -127,10 +127,9 @@ export type Mutation = {
   addImage?: Maybe<Array<Scalars['String']>>;
   addSuper: Super;
   confirmUserIsSeller?: Maybe<User>;
+  createAdmin: Admin;
   createBrand: Brand;
-  createCart: Cart;
   createCategory: Category;
-  createOrder: Order;
   createProduct: Product;
   createStore: Store;
   deleteBrand?: Maybe<Brand>;
@@ -167,24 +166,19 @@ export type MutationConfirmUserIsSellerArgs = {
 };
 
 
+export type MutationCreateAdminArgs = {
+  input?: InputMaybe<AdminInput>;
+};
+
+
 export type MutationCreateBrandArgs = {
   name: Scalars['String'];
   thumbnail: Scalars['String'];
 };
 
 
-export type MutationCreateCartArgs = {
-  input: CartInput;
-};
-
-
 export type MutationCreateCategoryArgs = {
   name: Scalars['String'];
-};
-
-
-export type MutationCreateOrderArgs = {
-  input: OrderInput;
 };
 
 
@@ -194,6 +188,7 @@ export type MutationCreateProductArgs = {
 
 
 export type MutationCreateStoreArgs = {
+  document_verification?: InputMaybe<Scalars['Upload']>;
   name: Scalars['String'];
   thumbnail: Array<InputMaybe<Scalars['Upload']>>;
 };
@@ -274,34 +269,6 @@ export type NumberQueryOperatorInput = {
   nin?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
-export type Order = {
-  __typename?: 'Order';
-  address: Scalars['String'];
-  cart?: Maybe<Cart>;
-  city: Scalars['String'];
-  country: Scalars['String'];
-  delivery: Scalars['String'];
-  estimatedTime: Scalars['String'];
-  id: Scalars['ID'];
-  status: Scalars['String'];
-  traking: Scalars['String'];
-  user: Scalars['String'];
-  zipCode: Scalars['Int'];
-};
-
-export type OrderInput = {
-  address: Scalars['String'];
-  cart: Scalars['ID'];
-  city: Scalars['String'];
-  country: Scalars['String'];
-  delivery: Scalars['String'];
-  estimatedTime: Scalars['String'];
-  status: Scalars['String'];
-  traking: Scalars['String'];
-  user: Scalars['String'];
-  zipCode: Scalars['Int'];
-};
-
 export type PageInfo = {
   __typename?: 'PageInfo';
   hasNextPage: Scalars['Boolean'];
@@ -342,12 +309,9 @@ export type Query = {
   __typename?: 'Query';
   brand?: Maybe<Brand>;
   brands: Array<Maybe<Brand>>;
-  cart?: Maybe<Cart>;
-  carts?: Maybe<Array<Maybe<Cart>>>;
   categories: Array<Maybe<Category>>;
   getAll?: Maybe<Array<Super>>;
   getCustomers: Array<Maybe<Customer>>;
-  orders?: Maybe<Order>;
   product?: Maybe<Product>;
   products?: Maybe<Array<Maybe<Product>>>;
   store?: Maybe<Store>;
@@ -357,16 +321,6 @@ export type Query = {
 
 export type QueryBrandArgs = {
   id: Scalars['ID'];
-};
-
-
-export type QueryCartArgs = {
-  id: Scalars['String'];
-};
-
-
-export type QueryOrdersArgs = {
-  user: Scalars['String'];
 };
 
 
@@ -436,6 +390,13 @@ export type SuperInput = {
   password: Scalars['String'];
 };
 
+export enum TypeAccountEnum {
+  Basic = 'BASIC',
+  Expert = 'EXPERT',
+  Pro = 'PRO',
+  Starter = 'STARTER'
+}
+
 export type User = {
   __typename?: 'User';
   AccountStatus: AccountStatus;
@@ -443,8 +404,10 @@ export type User = {
   email: Scalars['String'];
   firstName: Scalars['String'];
   id: Scalars['ID'];
+  isSeller: Scalars['Boolean'];
   lastName: Scalars['String'];
   role: Role;
+  typeAccount?: Maybe<TypeAccountEnum>;
 };
 
 export type UserInput = {
@@ -476,7 +439,9 @@ export type ResponseSub = {
   subscription?: Maybe<Scalars['String']>;
 };
 
-export type StoreFragment = { __typename?: 'Store', id: string, name: string, status: StoreStatus, owner: { __typename?: 'User', id: string, email: string }, thumbnail: Array<{ __typename?: 'Media', alt: string, id: string } | null> };
+export type StoreFragment = { __typename?: 'Store', id: string, name: string, status: StoreStatus, thumbnail: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, products: Array<{ __typename?: 'Product', id: string, name: string, description: string, price: number, discount: number, stock: number, thumbnails: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, category: Array<{ __typename?: 'Category', id: string, name: string } | null>, brand?: { __typename?: 'Brand', id: string, name: string, thumbnail: string } | null } | null> };
+
+export type UserFieldsFragment = { __typename?: 'User', id: string, firstName: string, lastName: string, email: string, role: Role, AccountStatus: AccountStatus, typeAccount?: TypeAccountEnum | null, isSeller: boolean, Store?: { __typename?: 'Store', id: string, name: string, status: StoreStatus, thumbnail: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, products: Array<{ __typename?: 'Product', id: string, name: string, description: string, price: number, discount: number, stock: number, thumbnails: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, brand?: { __typename?: 'Brand', id: string, name: string, thumbnail: string } | null, category: Array<{ __typename?: 'Category', id: string, name: string } | null> } | null> } | null };
 
 export type UserFragment = { __typename?: 'User', id: string, role: Role };
 
@@ -486,14 +451,14 @@ export type LoginMutationVariables = Exact<{
 }>;
 
 
-export type LoginMutation = { __typename?: 'Mutation', login?: { __typename?: 'AuthPayload', token: string, user: { __typename?: 'User', id: string, role: Role } } | null };
+export type LoginMutation = { __typename?: 'Mutation', login?: { __typename?: 'AuthPayload', token: string, user: { __typename?: 'User', id: string, firstName: string, lastName: string, email: string, role: Role, AccountStatus: AccountStatus, typeAccount?: TypeAccountEnum | null, isSeller: boolean, Store?: { __typename?: 'Store', id: string, name: string, status: StoreStatus, thumbnail: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, products: Array<{ __typename?: 'Product', id: string, name: string, description: string, price: number, discount: number, stock: number, thumbnails: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, brand?: { __typename?: 'Brand', id: string, name: string, thumbnail: string } | null, category: Array<{ __typename?: 'Category', id: string, name: string } | null> } | null> } | null } } | null };
 
 export type RegisterMutationVariables = Exact<{
   input?: InputMaybe<UserInput>;
 }>;
 
 
-export type RegisterMutation = { __typename?: 'Mutation', register?: { __typename?: 'AuthPayload', token: string, user: { __typename?: 'User', id: string, role: Role } } | null };
+export type RegisterMutation = { __typename?: 'Mutation', register?: { __typename?: 'AuthPayload', token: string, user: { __typename?: 'User', id: string, firstName: string, lastName: string, email: string, role: Role, AccountStatus: AccountStatus, typeAccount?: TypeAccountEnum | null, isSeller: boolean, Store?: { __typename?: 'Store', id: string, name: string, status: StoreStatus, thumbnail: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, products: Array<{ __typename?: 'Product', id: string, name: string, description: string, price: number, discount: number, stock: number, thumbnails: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, brand?: { __typename?: 'Brand', id: string, name: string, thumbnail: string } | null, category: Array<{ __typename?: 'Category', id: string, name: string } | null> } | null> } | null } } | null };
 
 export type CategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -503,21 +468,95 @@ export type CategoriesQuery = { __typename?: 'Query', categories: Array<{ __type
 export type ProductsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ProductsQuery = { __typename?: 'Query', products?: Array<{ __typename?: 'Product', description: string, discount: number, id: string, name: string, price: number, stock: number, brand?: { __typename?: 'Brand', id: string, name: string, thumbnail: string } | null, category: Array<{ __typename?: 'Category', id: string, name: string } | null>, store: { __typename?: 'Store', id: string, name: string, status: StoreStatus, owner: { __typename?: 'User', id: string, email: string }, thumbnail: Array<{ __typename?: 'Media', alt: string, id: string } | null> }, thumbnails: Array<{ __typename?: 'Media', alt: string, id: string, src: string, type: string } | null> } | null> | null };
+export type ProductsQuery = { __typename?: 'Query', products?: Array<{ __typename?: 'Product', description: string, discount: number, id: string, name: string, price: number, stock: number, brand?: { __typename?: 'Brand', id: string, name: string, thumbnail: string } | null, category: Array<{ __typename?: 'Category', id: string, name: string } | null>, store: { __typename?: 'Store', id: string, name: string, status: StoreStatus, thumbnail: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, products: Array<{ __typename?: 'Product', id: string, name: string, description: string, price: number, discount: number, stock: number, thumbnails: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, category: Array<{ __typename?: 'Category', id: string, name: string } | null>, brand?: { __typename?: 'Brand', id: string, name: string, thumbnail: string } | null } | null> }, thumbnails: Array<{ __typename?: 'Media', alt: string, id: string, src: string, type: string } | null> } | null> | null };
+
+export type StoreQueryVariables = Exact<{
+  storeId: Scalars['String'];
+}>;
+
+
+export type StoreQuery = { __typename?: 'Query', store?: { __typename?: 'Store', id: string, name: string, status: StoreStatus, thumbnail: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, products: Array<{ __typename?: 'Product', id: string, name: string, description: string, price: number, discount: number, stock: number, thumbnails: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, category: Array<{ __typename?: 'Category', id: string, name: string } | null>, brand?: { __typename?: 'Brand', id: string, name: string, thumbnail: string } | null } | null> } | null };
 
 export const StoreFragmentDoc = gql`
     fragment store on Store {
   id
   name
-  owner {
+  thumbnail {
     id
-    email
+    src
+    alt
+    type
+  }
+  products {
+    id
+    name
+    description
+    price
+    thumbnails {
+      id
+      src
+      alt
+      type
+    }
+    discount
+    category {
+      id
+      name
+    }
+    brand {
+      id
+      name
+      thumbnail
+    }
+    stock
   }
   status
-  thumbnail {
-    alt
+}
+    `;
+export const UserFieldsFragmentDoc = gql`
+    fragment userFields on User {
+  id
+  firstName
+  lastName
+  email
+  role
+  AccountStatus
+  Store {
     id
+    name
+    thumbnail {
+      id
+      src
+      alt
+      type
+    }
+    products {
+      id
+      name
+      description
+      price
+      thumbnails {
+        id
+        src
+        alt
+        type
+      }
+      discount
+      brand {
+        id
+        name
+        thumbnail
+      }
+      category {
+        id
+        name
+      }
+      stock
+    }
+    status
   }
+  typeAccount
+  isSeller
 }
     `;
 export const UserFragmentDoc = gql`
@@ -531,11 +570,11 @@ export const LoginDocument = gql`
   login(email: $email, password: $password) {
     token
     user {
-      ...user
+      ...userFields
     }
   }
 }
-    ${UserFragmentDoc}`;
+    ${UserFieldsFragmentDoc}`;
 export type LoginMutationFn = Apollo.MutationFunction<LoginMutation, LoginMutationVariables>;
 
 /**
@@ -568,11 +607,11 @@ export const RegisterDocument = gql`
   register(input: $input) {
     token
     user {
-      ...user
+      ...userFields
     }
   }
 }
-    ${UserFragmentDoc}`;
+    ${UserFieldsFragmentDoc}`;
 export type RegisterMutationFn = Apollo.MutationFunction<RegisterMutation, RegisterMutationVariables>;
 
 /**
@@ -691,3 +730,38 @@ export function useProductsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<P
 export type ProductsQueryHookResult = ReturnType<typeof useProductsQuery>;
 export type ProductsLazyQueryHookResult = ReturnType<typeof useProductsLazyQuery>;
 export type ProductsQueryResult = Apollo.QueryResult<ProductsQuery, ProductsQueryVariables>;
+export const StoreDocument = gql`
+    query Store($storeId: String!) {
+  store(id: $storeId) {
+    ...store
+  }
+}
+    ${StoreFragmentDoc}`;
+
+/**
+ * __useStoreQuery__
+ *
+ * To run a query within a React component, call `useStoreQuery` and pass it any options that fit your needs.
+ * When your component renders, `useStoreQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useStoreQuery({
+ *   variables: {
+ *      storeId: // value for 'storeId'
+ *   },
+ * });
+ */
+export function useStoreQuery(baseOptions: Apollo.QueryHookOptions<StoreQuery, StoreQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<StoreQuery, StoreQueryVariables>(StoreDocument, options);
+      }
+export function useStoreLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<StoreQuery, StoreQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<StoreQuery, StoreQueryVariables>(StoreDocument, options);
+        }
+export type StoreQueryHookResult = ReturnType<typeof useStoreQuery>;
+export type StoreLazyQueryHookResult = ReturnType<typeof useStoreLazyQuery>;
+export type StoreQueryResult = Apollo.QueryResult<StoreQuery, StoreQueryVariables>;

@@ -1,12 +1,14 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import { FC, useContext, useEffect } from 'react';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { FC, useContext, useEffect } from "react";
+import { yupResolver } from "@hookform/resolvers/yup";
 // import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import { useForm, SubmitHandler, Controller } from 'react-hook-form';
-import * as yup from 'yup';
-import { useLoginMutation } from '@/graphql/generated/graphql';
-import ModalContext from '@/context/ModalContext';
+import TextField from "@mui/material/TextField";
+import { useForm, SubmitHandler, Controller } from "react-hook-form";
+import * as yup from "yup";
+import { useLoginMutation } from "@/graphql/generated/graphql";
+import ModalContext from "@/context/ModalContext";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { setUserData } from "@/slices/index";
 
 interface LoginFormInputs {
   email: string;
@@ -21,6 +23,8 @@ const schema = yup.object().shape({
 const Login: FC = () => {
   const { toggleModal } = useContext(ModalContext);
   const [login, { data, loading, error }] = useLoginMutation();
+  const User = useAppSelector((state) => state.user);
+  const dispatch = useAppDispatch();
 
   const {
     control,
@@ -31,15 +35,13 @@ const Login: FC = () => {
   });
 
   const onSubmit: SubmitHandler<LoginFormInputs> = async (data: any) => {
-    console.log('data submitted: ', data);
-    await login(
-      {
-        variables: {
-          email: data.email,
-          password: data.password,
-        },
+    console.log("data submitted: ", data);
+    await login({
+      variables: {
+        email: data.email,
+        password: data.password,
       },
-    );
+    });
   };
 
   useEffect(() => {
@@ -47,6 +49,7 @@ const Login: FC = () => {
       if (data?.login) {
         console.log(data?.login);
         localStorage.setItem("token", data?.login?.token);
+        dispatch(setUserData(data?.login));
         if (toggleModal) toggleModal();
       }
     } catch (error) {
@@ -55,41 +58,41 @@ const Login: FC = () => {
   }, [data, toggleModal]);
 
   return (
-    <form className='grid gap-3' onSubmit={handleSubmit(onSubmit)}>
+    <form className="grid gap-3" onSubmit={handleSubmit(onSubmit)}>
       <Controller
-        name='email'
+        name="email"
         control={control}
-        defaultValue=''
+        defaultValue=""
         render={({ field }) => (
           <TextField
             {...field}
-            label='Email'
-            variant='outlined'
+            label="Email"
+            variant="outlined"
             error={!!errors.email}
-            helperText={errors.email ? errors.email?.message : ''}
+            helperText={errors.email ? errors.email?.message : ""}
             fullWidth
-            margin='dense'
+            margin="dense"
           />
         )}
       />
       <Controller
-        name='password'
+        name="password"
         control={control}
-        defaultValue=''
+        defaultValue=""
         render={({ field }) => (
           <TextField
             {...field}
-            type='password'
-            label='Password'
-            variant='outlined'
+            type="password"
+            label="Password"
+            variant="outlined"
             error={!!errors.password}
-            helperText={errors.password ? errors.password?.message : ''}
+            helperText={errors.password ? errors.password?.message : ""}
             fullWidth
-            margin='dense'
+            margin="dense"
           />
         )}
       />
-      <button type='submit' className='w-full btn-primary h-[56px] mt-3'>
+      <button type="submit" className="w-full btn-primary h-[56px] mt-3">
         Sign in
       </button>
     </form>

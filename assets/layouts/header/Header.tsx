@@ -1,12 +1,22 @@
-import React from "react";
+import React, { useEffect } from "react";
 import FeatherIcon from "feather-icons-react";
 import { AppBar, Box, IconButton, Toolbar } from "@mui/material";
 import PropTypes from "prop-types";
 // Dropdown Component
 import SearchDD from "./SearchDD";
 import ProfileDD from "./ProfileDD";
+import { useAppSelector } from "@/redux/hooks";
+import { useRouter } from "next/router";
 
-const Header = ({ sx, customClass, toggleMobileSidebar, position }) => {
+const Header = ({ sx, customClass, toggleMobileSidebar, position }: any) => {
+  const { User, isLogged } = useAppSelector((state) => state.user);
+  const router = useRouter();
+  useEffect(() => {
+    if (!isLogged) {
+      router.push("/");
+    }
+  }, [isLogged]);
+
   return (
     <AppBar sx={sx} position={position} elevation={0} className={customClass}>
       <Toolbar>
@@ -32,7 +42,7 @@ const Header = ({ sx, customClass, toggleMobileSidebar, position }) => {
 
         <Box flexGrow={1} />
 
-        <ProfileDD />
+        <ProfileDD User={User} />
         {/* ------------------------------------------- */}
         {/* Profile Dropdown */}
         {/* ------------------------------------------- */}

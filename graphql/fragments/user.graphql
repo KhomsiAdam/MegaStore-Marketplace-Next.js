@@ -1,5 +1,12 @@
-fragment store on Store {
+fragment userFields on User {
   id
+  firstName
+  lastName
+  email
+  role
+  AccountStatus
+  Store {
+    id
     name
     thumbnail {
       id
@@ -19,16 +26,19 @@ fragment store on Store {
         type
       }
       discount
-      category {
-        id
-        name
-      }
       brand {
         id
         name
         thumbnail
       }
+      category {
+        id
+        name
+      }
       stock
     }
     status
+  }
+  typeAccount
+  isSeller
 }

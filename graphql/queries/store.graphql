@@ -1,0 +1,5 @@
+query Store($storeId: String!) {
+  store(id: $storeId) {
+    ...store
+  }
+}

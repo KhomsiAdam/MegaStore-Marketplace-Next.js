@@ -13,7 +13,7 @@ import {
   Button,
   Divider,
 } from "@mui/material";
-const ProfileDD = () => {
+const ProfileDD = ({ User }: any) => {
   const [anchorEl4, setAnchorEl4] = React.useState(null);
 
   const handleClick4 = (event) => {
@@ -64,7 +64,7 @@ const ProfileDD = () => {
                 ml: 1,
               }}
             >
-              Julia
+              {User?.firstName} {User?.lastName}
             </Typography>
             <FeatherIcon icon="chevron-down" width="20" height="20" />
           </Box>

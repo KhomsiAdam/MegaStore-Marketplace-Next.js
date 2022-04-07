@@ -1,12 +1,14 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import { FC, useContext, useEffect } from 'react';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { FC, useContext, useEffect } from "react";
+import { yupResolver } from "@hookform/resolvers/yup";
 // import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import { useForm, SubmitHandler, Controller } from 'react-hook-form';
-import * as yup from 'yup';
-import { useRegisterMutation } from '@/graphql/generated/graphql';
-import ModalContext from '@/context/ModalContext';
+import TextField from "@mui/material/TextField";
+import { useForm, SubmitHandler, Controller } from "react-hook-form";
+import * as yup from "yup";
+import { useRegisterMutation } from "@/graphql/generated/graphql";
+import ModalContext from "@/context/ModalContext";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { setUserData } from "@/slices/index";
 
 interface RegisterFormInputs {
   email: string;
@@ -25,6 +27,8 @@ const schema = yup.object().shape({
 const Register: FC = () => {
   const { toggleModal } = useContext(ModalContext);
   const [register, { data, loading, error }] = useRegisterMutation();
+  const User = useAppSelector((state) => state.user);
+  const dispatch = useAppDispatch();
 
   const {
     control,
@@ -35,8 +39,8 @@ const Register: FC = () => {
   });
 
   const onSubmit: SubmitHandler<RegisterFormInputs> = async (data: any) => {
-    console.log('data submitted: ', data);
-    await register({
+    console.log("data submitted: ", data);
+    const response = await register({
       variables: {
         input: {
           email: data.email,
@@ -46,6 +50,7 @@ const Register: FC = () => {
         },
       },
     });
+    console.log("response: ", response);
   };
 
   useEffect(() => {
@@ -53,6 +58,7 @@ const Register: FC = () => {
       if (data?.register) {
         console.log(data?.register);
         localStorage.setItem("token", data?.register?.token);
+        dispatch(setUserData(data?.register));
         if (toggleModal) toggleModal();
       }
     } catch (error) {
@@ -61,73 +67,73 @@ const Register: FC = () => {
   }, [data, toggleModal]);
 
   return (
-    <form className='grid gap-3' onSubmit={handleSubmit(onSubmit)}>
+    <form className="grid gap-3" onSubmit={handleSubmit(onSubmit)}>
       <Controller
-        name='email'
+        name="email"
         control={control}
-        defaultValue=''
+        defaultValue=""
         render={({ field }) => (
           <TextField
             {...field}
-            label='Email'
-            variant='outlined'
+            label="Email"
+            variant="outlined"
             error={!!errors.email}
-            helperText={errors.email ? errors.email?.message : ''}
+            helperText={errors.email ? errors.email?.message : ""}
             fullWidth
-            margin='dense'
+            margin="dense"
           />
         )}
       />
       <Controller
-        name='password'
+        name="password"
         control={control}
-        defaultValue=''
+        defaultValue=""
         render={({ field }) => (
           <TextField
             {...field}
-            type='password'
-            label='Password'
-            variant='outlined'
+            type="password"
+            label="Password"
+            variant="outlined"
             error={!!errors.password}
-            helperText={errors.password ? errors.password?.message : ''}
+            helperText={errors.password ? errors.password?.message : ""}
             fullWidth
-            margin='dense'
+            margin="dense"
           />
         )}
       />
       <Controller
-        name='firstName'
+        name="firstName"
         control={control}
-        defaultValue=''
+        defaultValue=""
         render={({ field }) => (
           <TextField
             {...field}
-            label='Firstname'
-            variant='outlined'
+            label="Firstname"
+            variant="outlined"
             error={!!errors.firstName}
-            helperText={errors.firstName ? errors.firstName?.message : ''}
+            helperText={errors.firstName ? errors.firstName?.message : ""}
             fullWidth
-            margin='dense'
+            margin="dense"
           />
         )}
       />
       <Controller
-        name='lastName'
+        name="lastName"
         control={control}
-        defaultValue=''
+        defaultValue=""
         render={({ field }) => (
           <TextField
             {...field}
-            label='Lastname'
-            variant='outlined'
+            label="Lastname"
+            variant="outlined"
             error={!!errors.lastName}
-            helperText={errors.lastName ? errors.lastName?.message : ''}
+            helperText={errors.lastName ? errors.lastName?.message : ""}
             fullWidth
-            margin='dense'
+            margin="dense"
           />
         )}
       />
-      <button type='submit' className='w-full btn-primary h-[56px] mt-3'>
+      <button type="submit" className="w-full btn-primary h-[56px] mt-3">
         Sign up
       </button>
     </form>

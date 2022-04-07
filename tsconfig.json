@@ -27,9 +27,17 @@
       "@/context/*": ["context/*"],
       "@/hooks/*": ["hooks/*"],
       "@/interfaces/*": ["interfaces/*"],
-      "@/app/*": ["app/*"]
-    },
+      "@/app/*": ["app/*"],
+      "@/slices/*": ["redux/slices/*"],
+      "@/redux/*": ["redux/*"]
+    }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "redux/rootReducer.js", "redux/store.js"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "redux/rootReducer.js",
+    "redux/store.js"
+, "assets/layouts/header/Header.js"  ],
   "exclude": ["node_modules"]
 }

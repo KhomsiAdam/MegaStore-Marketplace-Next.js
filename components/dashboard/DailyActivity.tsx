@@ -6,7 +6,7 @@ import TimelineConnector from "@mui/lab/TimelineConnector";
 import TimelineContent from "@mui/lab/TimelineContent";
 import TimelineOppositeContent from "@mui/lab/TimelineOppositeContent";
 import TimelineDot from "@mui/lab/TimelineDot";
-import BaseCard from "../baseCard/BaseCard";
+import BaseCard from "@/components/baseCard";
 
 const activities = [
   {
