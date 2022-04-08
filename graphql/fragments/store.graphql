@@ -26,4 +26,13 @@ fragment store on Store {
     stock
   }
   status
+  document_verification {
+    alt
+    id
+    src
+    type
+  }
+  owner {
+    ...userFields
+  }
 }

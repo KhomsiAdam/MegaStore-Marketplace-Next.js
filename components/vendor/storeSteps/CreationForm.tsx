@@ -15,8 +15,12 @@ import BaseCard from "@/components/baseCard";
 import { useCreateStoreMutation } from "@/graphql/generated/graphql";
 import { useState } from "react";
 import { UploadFiles } from "@/components/upload";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { setUserData } from "@/slices/index";
 
 const CreationForm = () => {
+  const dispatch = useAppDispatch();
+  const User = useAppSelector((state) => state.user);
   const [store, setStore] = useState<{
     name: string;
     documentVerification: File[] | null;
@@ -30,7 +34,6 @@ const CreationForm = () => {
   const [mutate, data] = useCreateStoreMutation();
 
   const createStoreSubmit = async () => {
-
     const variables = {
       name: store.name,
       documentVerification: store.documentVerification,
@@ -38,12 +41,19 @@ const CreationForm = () => {
     };
 
     console.log(variables);
-    
 
-    await mutate({
+    const { data } = await mutate({
       variables,
     });
 
+    
+
+    dispatch(
+      setUserData({
+        token: User.token || "",
+        user: data?.createStore.owner,
+      })
+    );
   };
 
   return (
@@ -61,14 +71,16 @@ const CreationForm = () => {
               handleChange={(files) =>
                 setStore({
                   ...store,
-                  documentVerification: files,
+                  documentVerification: files.map((e) => e?.file),
                 })
               }
               limit={1}
               message="business document"
             />
             <UploadFiles
-              handleChange={(files) => setStore({ ...store, thumbnail: files })}
+              handleChange={(files) =>
+                setStore({ ...store, thumbnail: files.map((e) => e?.file) })
+              }
               limit={3}
               message="Store Upload"
             />

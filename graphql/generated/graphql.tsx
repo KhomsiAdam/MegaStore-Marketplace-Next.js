@@ -285,6 +285,7 @@ export type ProductInput = {
   discount?: InputMaybe<Scalars['Float']>;
   name?: InputMaybe<Scalars['String']>;
   price?: InputMaybe<Scalars['Float']>;
+  store?: InputMaybe<Scalars['ID']>;
   thumbnails?: InputMaybe<Array<InputMaybe<Scalars['Upload']>>>;
 };
 
@@ -342,7 +343,7 @@ export enum Sort {
 
 export type Store = {
   __typename?: 'Store';
-  document_verification?: Maybe<Media>;
+  document_verification?: Maybe<Array<Maybe<Media>>>;
   id: Scalars['ID'];
   limit_product?: Maybe<Scalars['Int']>;
   name: Scalars['String'];
@@ -419,7 +420,7 @@ export type ResponseSub = {
   subscription?: Maybe<Scalars['String']>;
 };
 
-export type StoreFragment = { __typename?: 'Store', id: string, name: string, status: StoreStatus, thumbnail: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, products: Array<{ __typename?: 'Product', id: string, name: string, description: string, price: number, discount: number, stock: number, thumbnails: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, category: Array<{ __typename?: 'Category', id: string, name: string } | null> } | null> };
+export type StoreFragment = { __typename?: 'Store', id: string, name: string, status: StoreStatus, thumbnail: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, products: Array<{ __typename?: 'Product', id: string, name: string, description: string, price: number, discount: number, stock: number, thumbnails: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, category: Array<{ __typename?: 'Category', id: string, name: string } | null> } | null>, document_verification?: Array<{ __typename?: 'Media', alt: string, id: string, src: string, type: string } | null> | null, owner: { __typename?: 'User', id: string, firstName: string, lastName: string, email: string, role: Role, accountStatus?: AccountStatus | null, typeAccount?: TypeAccount | null, isSeller: boolean, store?: { __typename?: 'Store', id: string, name: string, status: StoreStatus, thumbnail: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, products: Array<{ __typename?: 'Product', id: string, name: string, description: string, price: number, discount: number, stock: number, thumbnails: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, category: Array<{ __typename?: 'Category', id: string, name: string } | null> } | null> } | null } };
 
 export type UserFieldsFragment = { __typename?: 'User', id: string, firstName: string, lastName: string, email: string, role: Role, accountStatus?: AccountStatus | null, typeAccount?: TypeAccount | null, isSeller: boolean, store?: { __typename?: 'Store', id: string, name: string, status: StoreStatus, thumbnail: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, products: Array<{ __typename?: 'Product', id: string, name: string, description: string, price: number, discount: number, stock: number, thumbnails: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, category: Array<{ __typename?: 'Category', id: string, name: string } | null> } | null> } | null };
 
@@ -445,7 +446,7 @@ export type CreateStoreMutationVariables = Exact<{
 }>;
 
 
-export type CreateStoreMutation = { __typename?: 'Mutation', createStore: { __typename?: 'Store', id: string, name: string, status: StoreStatus, thumbnail: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, products: Array<{ __typename?: 'Product', id: string, name: string, description: string, price: number, discount: number, stock: number, thumbnails: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, category: Array<{ __typename?: 'Category', id: string, name: string } | null> } | null> } };
+export type CreateStoreMutation = { __typename?: 'Mutation', createStore: { __typename?: 'Store', id: string, name: string, status: StoreStatus, thumbnail: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, products: Array<{ __typename?: 'Product', id: string, name: string, description: string, price: number, discount: number, stock: number, thumbnails: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, category: Array<{ __typename?: 'Category', id: string, name: string } | null> } | null>, document_verification?: Array<{ __typename?: 'Media', alt: string, id: string, src: string, type: string } | null> | null, owner: { __typename?: 'User', id: string, firstName: string, lastName: string, email: string, role: Role, accountStatus?: AccountStatus | null, typeAccount?: TypeAccount | null, isSeller: boolean, store?: { __typename?: 'Store', id: string, name: string, status: StoreStatus, thumbnail: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, products: Array<{ __typename?: 'Product', id: string, name: string, description: string, price: number, discount: number, stock: number, thumbnails: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, category: Array<{ __typename?: 'Category', id: string, name: string } | null> } | null> } | null } } };
 
 export type CategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -455,46 +456,15 @@ export type CategoriesQuery = { __typename?: 'Query', categories: Array<{ __type
 export type ProductsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ProductsQuery = { __typename?: 'Query', products?: Array<{ __typename?: 'Product', description: string, discount: number, id: string, name: string, price: number, stock: number, category: Array<{ __typename?: 'Category', id: string, name: string } | null>, store: { __typename?: 'Store', id: string, name: string, status: StoreStatus, thumbnail: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, products: Array<{ __typename?: 'Product', id: string, name: string, description: string, price: number, discount: number, stock: number, thumbnails: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, category: Array<{ __typename?: 'Category', id: string, name: string } | null> } | null> }, thumbnails: Array<{ __typename?: 'Media', alt: string, id: string, src: string, type: string } | null> } | null> | null };
+export type ProductsQuery = { __typename?: 'Query', products?: Array<{ __typename?: 'Product', description: string, discount: number, id: string, name: string, price: number, stock: number, category: Array<{ __typename?: 'Category', id: string, name: string } | null>, store: { __typename?: 'Store', id: string, name: string, status: StoreStatus, thumbnail: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, products: Array<{ __typename?: 'Product', id: string, name: string, description: string, price: number, discount: number, stock: number, thumbnails: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, category: Array<{ __typename?: 'Category', id: string, name: string } | null> } | null>, document_verification?: Array<{ __typename?: 'Media', alt: string, id: string, src: string, type: string } | null> | null, owner: { __typename?: 'User', id: string, firstName: string, lastName: string, email: string, role: Role, accountStatus?: AccountStatus | null, typeAccount?: TypeAccount | null, isSeller: boolean, store?: { __typename?: 'Store', id: string, name: string, status: StoreStatus, thumbnail: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, products: Array<{ __typename?: 'Product', id: string, name: string, description: string, price: number, discount: number, stock: number, thumbnails: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, category: Array<{ __typename?: 'Category', id: string, name: string } | null> } | null> } | null } }, thumbnails: Array<{ __typename?: 'Media', alt: string, id: string, src: string, type: string } | null> } | null> | null };
 
 export type StoreQueryVariables = Exact<{
   storeId: Scalars['String'];
 }>;
 
 
-export type StoreQuery = { __typename?: 'Query', store?: { __typename?: 'Store', id: string, name: string, status: StoreStatus, thumbnail: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, products: Array<{ __typename?: 'Product', id: string, name: string, description: string, price: number, discount: number, stock: number, thumbnails: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, category: Array<{ __typename?: 'Category', id: string, name: string } | null> } | null> } | null };
+export type StoreQuery = { __typename?: 'Query', store?: { __typename?: 'Store', id: string, name: string, status: StoreStatus, thumbnail: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, products: Array<{ __typename?: 'Product', id: string, name: string, description: string, price: number, discount: number, stock: number, thumbnails: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, category: Array<{ __typename?: 'Category', id: string, name: string } | null> } | null>, document_verification?: Array<{ __typename?: 'Media', alt: string, id: string, src: string, type: string } | null> | null, owner: { __typename?: 'User', id: string, firstName: string, lastName: string, email: string, role: Role, accountStatus?: AccountStatus | null, typeAccount?: TypeAccount | null, isSeller: boolean, store?: { __typename?: 'Store', id: string, name: string, status: StoreStatus, thumbnail: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, products: Array<{ __typename?: 'Product', id: string, name: string, description: string, price: number, discount: number, stock: number, thumbnails: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, category: Array<{ __typename?: 'Category', id: string, name: string } | null> } | null> } | null } } | null };
 
-export const StoreFragmentDoc = gql`
-    fragment store on Store {
-  id
-  name
-  thumbnail {
-    id
-    src
-    alt
-    type
-  }
-  products {
-    id
-    name
-    description
-    price
-    thumbnails {
-      id
-      src
-      alt
-      type
-    }
-    discount
-    category {
-      id
-      name
-    }
-    stock
-  }
-  status
-}
-    `;
 export const UserFieldsFragmentDoc = gql`
     fragment userFields on User {
   id
@@ -536,6 +506,46 @@ export const UserFieldsFragmentDoc = gql`
   isSeller
 }
     `;
+export const StoreFragmentDoc = gql`
+    fragment store on Store {
+  id
+  name
+  thumbnail {
+    id
+    src
+    alt
+    type
+  }
+  products {
+    id
+    name
+    description
+    price
+    thumbnails {
+      id
+      src
+      alt
+      type
+    }
+    discount
+    category {
+      id
+      name
+    }
+    stock
+  }
+  status
+  document_verification {
+    alt
+    id
+    src
+    type
+  }
+  owner {
+    ...userFields
+  }
+}
+    ${UserFieldsFragmentDoc}`;
 export const LoginDocument = gql`
     mutation Login($email: String!, $password: String!) {
   login(email: $email, password: $password) {

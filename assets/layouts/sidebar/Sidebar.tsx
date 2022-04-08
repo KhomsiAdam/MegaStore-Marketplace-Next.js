@@ -44,7 +44,11 @@ const Sidebar = ({
 
   const SidebarContent = (
     <Box p={2} height="100%">
-      {isLogged && User.isSeller && <LogoIcon />}
+      {isLogged && User.isSeller && (
+        <div className="flex items-center gap-5">
+          <LogoIcon user={User}  /> <span> {User.store.name}</span>
+        </div>
+      )}
       <Box mt={2}>
         <List>
           {isLogged && User.isSeller ? (

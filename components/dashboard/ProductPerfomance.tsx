@@ -55,6 +55,8 @@ const products = [
 ];
 
 const ProductPerfomance: FC<ProductsQuery> = ({ products }) => {
+  console.log(products);
+
   return (
     <BaseCard title="Product Perfomance">
       <Table
@@ -94,67 +96,68 @@ const ProductPerfomance: FC<ProductsQuery> = ({ products }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {products && products!.map((product) => (
-            <TableRow key={product!.id}>
-              <TableCell>
-                <Typography
-                  sx={{
-                    fontSize: "15px",
-                    fontWeight: "500",
-                  }}
-                >
-                  {product!.name}
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                  }}
-                >
-                  <Box>
-                    <Typography
-                      variant="h6"
-                      sx={{
-                        fontWeight: "600",
-                      }}
-                    >
-                      {product!.description}
-                    </Typography>
-                    <Typography
-                      color="textSecondary"
-                      sx={{
-                        fontSize: "13px",
-                      }}
-                    >
-                      {product!.price}
-                    </Typography>
+          {products &&
+            products!.map((product) => (
+              <TableRow key={product!.id}>
+                <TableCell>
+                  <Typography
+                    sx={{
+                      fontSize: "15px",
+                      fontWeight: "500",
+                    }}
+                  >
+                    {product!.name}
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Box>
+                      <Typography
+                        variant="h6"
+                        sx={{
+                          fontWeight: "600",
+                        }}
+                      >
+                        {product!.description.substring(0, 10)}...
+                      </Typography>
+                      <Typography
+                        color="textSecondary"
+                        sx={{
+                          fontSize: "13px",
+                        }}
+                      >
+                        {product!.price}
+                      </Typography>
+                    </Box>
                   </Box>
-                </Box>
-              </TableCell>
-              <TableCell>
-                <Typography color="textSecondary" variant="h6">
-                  {product!.category}
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Chip
-                  sx={{
-                    pl: "4px",
-                    pr: "4px",
-                    backgroundColor: product!.discount,
-                    color: "#fff",
-                  }}
-                  size="small"
-                  label={product!.thumbnails[0]?.alt}
-                ></Chip>
-              </TableCell>
-              <TableCell align="right">
-                <Typography variant="h6">${product!.price}k</Typography>
-              </TableCell>
-            </TableRow>
-          ))}
+                </TableCell>
+                <TableCell>
+                  <Typography color="textSecondary" variant="h6">
+                    {product!.category[0]?.name}
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  <Chip
+                    sx={{
+                      pl: "4px",
+                      pr: "4px",
+                      backgroundColor: product!.discount,
+                      color: "#fff",
+                    }}
+                    size="small"
+                    label={product!.thumbnails[0]?.alt}
+                  ></Chip>
+                </TableCell>
+                <TableCell align="right">
+                  <Typography variant="h6">${product!.price}k</Typography>
+                </TableCell>
+              </TableRow>
+            ))}
         </TableBody>
       </Table>
     </BaseCard>
