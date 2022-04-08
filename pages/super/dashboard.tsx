@@ -3,40 +3,23 @@ import { SuperLayout } from 'layouts/super.layout';
 import {
   Button,
   ButtonGroup,
-  FormControl,
-  FormLabel,
-  Input,
   Menu,
   MenuButton,
   MenuItem,
   MenuList,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
   Popover,
   PopoverArrow,
   PopoverBody,
   PopoverCloseButton,
   PopoverContent,
-  PopoverFooter,
   PopoverHeader,
   PopoverTrigger,
   Portal,
-  Text,
-  Tooltip,
-  useDisclosure,
   useToast,
 } from '@chakra-ui/react';
 import { useEffect, useRef, useState } from 'react';
 import AttachmentOutlinedIcon from '@mui/icons-material/AttachmentOutlined';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import { gql, useMutation } from '@apollo/client';
-import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
-import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import {
   AccountStatus,
   Role,
@@ -84,11 +67,11 @@ const Dashboard = () => {
           <p className='focus:outline-none text-base sm:text-lg md:text-xl lg:text-2xl font-bold leading-normal text-gray-800'>
             Sellers
           </p>
-          <div className='py-3 px-4 flex items-center text-sm font-medium leading-none text-gray-600 bg-gray-200 hover:bg-gray-300 cursor-pointer rounded'>
+          <div className='flex items-center px-4 py-3 text-sm font-medium leading-none text-gray-600 bg-gray-200 rounded cursor-pointer hover:bg-gray-300'>
             <p>Sort By:</p>
             <select
               aria-label='select'
-              className='focus:text-indigo-600 focus:outline-none bg-transparent ml-1'>
+              className='ml-1 bg-transparent focus:text-indigo-600 focus:outline-none'>
               <option className='text-sm text-indigo-800'>Latest</option>
               <option className='text-sm text-indigo-800'>Oldest</option>
               <option className='text-sm text-indigo-800'>Latest</option>
@@ -96,8 +79,8 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-      <div className='bg-white py-4 md:py-7 px-4 md:px-8 xl:px-10'>
-        <div className='sm:flex items-center justify-between'>
+      <div className='px-4 py-4 bg-white md:py-7 md:px-8 xl:px-10'>
+        <div className='items-center justify-between sm:flex'>
           <div className='flex items-center'>
             <a className='rounded-full focus:outline-none focus:ring-2  focus:bg-indigo-50 focus:ring-indigo-800'>
               <div className='py-2 px-8 bg-indigo-100 text-indigo-700 rounded-full'>
@@ -121,7 +104,7 @@ const Dashboard = () => {
             </p>
           </button>
         </div>
-        <div className='mt-7 overflow-x-auto'>
+        <div className='overflow-x-auto mt-7'>
           <table className='w-full whitespace-nowrap'>
             <tbody>
               {data?.getUsersAccount.map((user) => {
@@ -196,7 +179,7 @@ const RowAccount = ({
       <td className='pl-5'>
         <div className='w-10 h-10'>
           <img
-            className='rounded-full object-cover'
+            className='object-cover rounded-full'
             src='https://pbs.twimg.com/profile_images/1450115233205272576/CFTTK-0I_400x400.jpg'
           />
         </div>
@@ -222,7 +205,7 @@ const RowAccount = ({
       <td className='pl-5'>
         <div className='flex items-center'>
           <AttachmentOutlinedIcon />
-          <p className='text-sm leading-none text-gray-600 ml-2'>04/07</p>
+          <p className='ml-2 text-sm leading-none text-gray-600'>04/07</p>
         </div>
       </td>
       <td className='pl-5'>

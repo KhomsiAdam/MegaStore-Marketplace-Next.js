@@ -95,14 +95,14 @@ export const getServerSideProps: GetServerSideProps = async () => {
   // const { data: categoriesData } = await apolloClient.query({
   //   query: CategoriesDocument,
   // });
-  // const { data: productData } = await apolloClient.query({
-  //   query: ProductsDocument,
-  // });
-
+  const { data: productData } = await apolloClient.query({
+    query: ProductsDocument,
+  });
+  
   return {
     props: {
       categories: categoriesData,
-      products: products,
+      products: productData?.products,
     },
   };
 };

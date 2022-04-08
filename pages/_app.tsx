@@ -1,4 +1,3 @@
-import { NextPage } from 'next';
 import { Provider } from 'react-redux';
 import { store } from '@/redux/store';
 import '@/styles/globals.css';
@@ -14,6 +13,7 @@ import { defaultLayout } from 'layouts';
 import { NextPageWithLayout } from '@/interfaces/index';
 import { ThemeProvider } from '@mui/material/styles';
 import mainTheme from '@/assets/theme/mainTheme';
+import { CartState } from '@/context/cart/CartContext';
 
 type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
@@ -32,12 +32,14 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
       <Provider store={store}>
         <ThemeProvider theme={mainTheme}>
           <ModalProvider>
-            {
-              // @ts-ignore
-              <Layout>
-                <Component {...pageProps} />
-              </Layout>
-            }
+            <CartState>
+              {
+                // @ts-ignore
+                <Layout>
+                  <Component {...pageProps} />
+                </Layout>
+              }
+            </CartState>
           </ModalProvider>
         </ThemeProvider>
       </Provider>
