@@ -1,4 +1,5 @@
 import React from "react";
+//@ts-ignore
 import FeatherIcon from "feather-icons-react";
 import Image from "next/image";
 import userimg from "@/assets/users/user2.jpg";
@@ -6,17 +7,17 @@ import {
   Box,
   Menu,
   Typography,
-  Link,
   ListItemButton,
   List,
   ListItemText,
   Button,
   Divider,
 } from "@mui/material";
+import Link from 'next/link';
 const ProfileDD = ({ User }: any) => {
   const [anchorEl4, setAnchorEl4] = React.useState(null);
 
-  const handleClick4 = (event) => {
+  const handleClick4 = (event: any) => {
     setAnchorEl4(event.currentTarget);
   };
 
@@ -35,6 +36,7 @@ const ProfileDD = ({ User }: any) => {
         <Box display="flex" alignItems="center">
           <Image
             src={userimg}
+            //@ts-ignore
             alt={userimg}
             width="30"
             height="30"
@@ -105,7 +107,7 @@ const ProfileDD = ({ User }: any) => {
           </Box>
           <Divider />
           <Box p={2}>
-            <Link to="/">
+            <Link href="/" passHref>
               <Button fullWidth variant="contained" color="primary">
                 Logout
               </Button>

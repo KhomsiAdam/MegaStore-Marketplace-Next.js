@@ -9,7 +9,6 @@ const settings = {
   // devIndicators: {
   //   autoPrerender: false,
   // },
-
   pwa: {
     dest: 'public',
     // mode: 'production',

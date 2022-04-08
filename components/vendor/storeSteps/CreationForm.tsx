@@ -59,6 +59,7 @@ const CreationForm = () => {
   return (
     <Grid container spacing={0}>
       <Grid item xs={12} lg={12}>
+<<<<<<< HEAD
         <BaseCard title="Create Store :">
           <Stack spacing={3}>
             <TextField
@@ -83,10 +84,38 @@ const CreationForm = () => {
               }
               limit={3}
               message="Store Upload"
+=======
+        <BaseCard title='Form Layout'>
+          <Stack spacing={3}>
+            <TextField
+              id='name-basic'
+              label='Name'
+              variant='outlined'
+              defaultValue='Nirav Joshi'
+            />
+            <TextField id='email-basic' label='Email' variant='outlined' />
+            <Button variant='contained' component='label'>
+              Upload File
+              <input type='file' hidden />
+            </Button>
+            <TextField
+              id='pass-basic'
+              label='Password'
+              type='password'
+              variant='outlined'
+            />
+            <TextField
+              id='outlined-multiline-static'
+              label='Text Area'
+              multiline
+              rows={4}
+              defaultValue='Default Value'
+>>>>>>> 57b40c6e455befce9c574dd9863fe6d481c03619
             />
           </Stack>
           <br />
-          <Button variant="contained" mt={2} onClick={createStoreSubmit}>
+          {/*@ts-ignore*/}
+          <Button variant='contained' mt={2} onClick={createStoreSubmit}>
             Submit
           </Button>
         </BaseCard>

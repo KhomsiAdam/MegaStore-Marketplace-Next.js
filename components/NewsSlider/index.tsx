@@ -4,8 +4,9 @@ import "swiper/css";
 import "swiper/css/lazy";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
+import "swiper/css/autoplay";
 
-import { Lazy, Pagination, Navigation } from 'swiper';
+import { Lazy, Pagination, Navigation, Autoplay } from 'swiper';
 import Image from 'next/image';
 
 export const NewsSlider = () => {
@@ -18,8 +19,12 @@ export const NewsSlider = () => {
       }}
       navigation={true}
       lazy={true}
-      modules={[Lazy, Pagination, Navigation]}
+      modules={[Lazy, Pagination, Navigation, Autoplay]}
       className='mySwiper'
+      autoplay={{
+        delay: 2500,
+        disableOnInteraction: false,
+      }}  
       style={{
         // @ts-ignore
         "--swiper-navigation-color": "#fbba00",

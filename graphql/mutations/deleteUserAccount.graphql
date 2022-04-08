@@ -1,0 +1,7 @@
+mutation DeleteUserAccount($id: ID!) {
+  deleteUserAccount(id: $id) {
+    id
+    firstName
+    lastName
+  }
+}

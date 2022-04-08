@@ -1,0 +1,7 @@
+mutation ConfirmUserIsSeller($id: ID!) {
+  confirmUserIsSeller(id: $id) {
+    id
+    firstName
+    lastName
+  }
+}

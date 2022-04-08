@@ -1,8 +1,9 @@
-query GetUsersAccount($role: Role!, $isSeller: Boolean) {
+query UsersAccount($role: Role!, $isSeller: Boolean) {
   getUsersAccount(role: $role, isSeller: $isSeller) {
     id
     firstName
     lastName
+    email
     role
     accountStatus
     isSeller
