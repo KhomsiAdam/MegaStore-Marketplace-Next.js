@@ -1,10 +1,15 @@
 import type { NextPage } from 'next';
-import { Layout } from 'layouts/super.layout';
+import { SuperLayout } from 'layouts/super.layout';
 import {
   Button,
+  ButtonGroup,
   FormControl,
   FormLabel,
   Input,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -12,75 +17,45 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Popover,
+  PopoverArrow,
+  PopoverBody,
+  PopoverCloseButton,
+  PopoverContent,
+  PopoverFooter,
+  PopoverHeader,
+  PopoverTrigger,
+  Portal,
   Text,
+  Tooltip,
   useDisclosure,
+  useToast,
 } from '@chakra-ui/react';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import AttachmentOutlinedIcon from '@mui/icons-material/AttachmentOutlined';
-
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { gql, useMutation } from '@apollo/client';
-
-function InitialFocus() {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
-  const initialRef = useRef();
-  const finalRef = useRef();
-
-  return (
-    <>
-      <Button onClick={onOpen}>Open Modal</Button>
-      <Button ml={4} ref={finalRef}>
-        I'll receive focus on close
-      </Button>
-
-      <Modal
-        motionPreset='slideInBottom'
-        initialFocusRef={initialRef}
-        finalFocusRef={finalRef}
-        isOpen={isOpen}
-        onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Create your account</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody pb={6}>
-            <FormControl>
-              <FormLabel>First name</FormLabel>
-              <Input ref={initialRef} placeholder='First name' />
-            </FormControl>
-
-            <FormControl mt={4}>
-              <FormLabel>Last name</FormLabel>
-              <Input placeholder='Last name' />
-            </FormControl>
-          </ModalBody>
-
-          <ModalFooter>
-            <Button colorScheme='blue' mr={3}>
-              Save
-            </Button>
-            <Button onClick={onClose}>Cancel</Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-    </>
-  );
-}
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import {
+  AccountStatus,
+  Role,
+  useConfirmUserIsSellerMutation,
+  useDeleteUserAccountMutation,
+  UsersAccountDocument,
+  useUsersAccountQuery,
+} from '@/graphql/generated/graphql';
 
 export const Page: NextPage = ({}) => {
   return (
     <>
-      {/* <Button colorScheme='blue'>Button</Button> */}
-      {/* <h1>Hello</h1> */}
-      <InitialFocus />
-      <UploadFile />
       <Dashboard />
     </>
   );
 };
 
 //@ts-ignore
-Page.Layout = Layout;
+Page.Layout = SuperLayout;
 
 export const getServerSideProps = async () => {
   return { props: {} };
@@ -88,96 +63,26 @@ export const getServerSideProps = async () => {
 
 export default Page;
 
-const MUTATION = gql`
-  mutation CreateStore(
-    $name: String!
-    $thumbnail: [Upload]!
-    $document_verification: [Upload]!
-  ) {
-    createStore(
-      name: $name
-      thumbnail: $thumbnail
-      document_verification: $document_verification
-    ) {
-      id
-      thumbnail {
-        id
-        src
-        alt
-      }
-    }
-  }
-`;
-function UploadFile() {
-  const [preview, setPreview] = useState<any>([]);
-
-  const [mutate, { data }] = useMutation(MUTATION, {
-    onCompleted: () => {
-      console.log('completed');
+const Dashboard = () => {
+  const { data, refetch } = useUsersAccountQuery({
+    variables: {
+      role: Role.Seller,
+      isSeller: false,
     },
   });
-  console.log(data);
 
-  const onChange = async (e: any) => {
-    const files = e.target.files;
-
-    const image_preview = [...files].map((file: any) => {
-      return { [file.name]: URL.createObjectURL(file) };
-    });
-
-    setPreview((prev: any) => [...prev, ...image_preview]);
-
-    // const image_preview = { [file.name]: URL.createObjectURL(file) };
-
-    // console.log(image_preview);
-
-    // console.log({
-    //   variables: {
-    //     name: 'store 51',
-    //     thumbnail: [file],
-    //     document_verification: [file],
-    //   },
-    // });
-
-    // mutate({
-    //   variables: {
-    //     name: 'store 51',
-    //     thumbnail: [file],
-    //     document_verification: [file],
-    //   },
-    // });
-  };
+  useEffect(() => {
+    const refetchQuery = () => refetch();
+    window.addEventListener('focus', refetchQuery);
+    return () => window.removeEventListener('focus', refetchQuery);
+  }, []);
 
   return (
-    <div>
-      <input
-        onChange={onChange}
-        type='file'
-        className='block w-full text-sm text-slate-500
-   file:mr-4 file:py-2 file:px-4
-   file:rounded-full file:border-0
-   file:text-sm file:font-semibold
-   file:bg-violet-50 file:text-violet-700
-   hover:file:bg-violet-100
- '
-      />
-
-      {preview.map((item: any, key) => {
-        return <img src={Object.values(item)[0]} key={key} />;
-      })}
-    </div>
-  );
-}
-
-const Dashboard = () => {
-  return (
-    <div className='sm:px-6 w-full'>
+    <div className='w-full'>
       <div className='px-4 md:px-10 py-4 md:py-7'>
         <div className='flex items-center justify-between'>
-          <p
-            // tabindex='0'
-            className='focus:outline-none text-base sm:text-lg md:text-xl lg:text-2xl font-bold leading-normal text-gray-800'>
-            Tasks
+          <p className='focus:outline-none text-base sm:text-lg md:text-xl lg:text-2xl font-bold leading-normal text-gray-800'>
+            Sellers
           </p>
           <div className='py-3 px-4 flex items-center text-sm font-medium leading-none text-gray-600 bg-gray-200 hover:bg-gray-300 cursor-pointer rounded'>
             <p>Sort By:</p>
@@ -194,31 +99,23 @@ const Dashboard = () => {
       <div className='bg-white py-4 md:py-7 px-4 md:px-8 xl:px-10'>
         <div className='sm:flex items-center justify-between'>
           <div className='flex items-center'>
-            <a
-              className='rounded-full focus:outline-none focus:ring-2  focus:bg-indigo-50 focus:ring-indigo-800'
-              href=' javascript:void(0)'>
+            <a className='rounded-full focus:outline-none focus:ring-2  focus:bg-indigo-50 focus:ring-indigo-800'>
               <div className='py-2 px-8 bg-indigo-100 text-indigo-700 rounded-full'>
                 <p>All</p>
               </div>
             </a>
-            <a
-              className='rounded-full focus:outline-none focus:ring-2 focus:bg-indigo-50 focus:ring-indigo-800 ml-4 sm:ml-8'
-              href='javascript:void(0)'>
+            <a className='rounded-full focus:outline-none focus:ring-2 focus:bg-indigo-50 focus:ring-indigo-800 ml-4 sm:ml-8'>
               <div className='py-2 px-8 text-gray-600 hover:text-indigo-700 hover:bg-indigo-100 rounded-full '>
                 <p>Done</p>
               </div>
             </a>
-            <a
-              className='rounded-full focus:outline-none focus:ring-2 focus:bg-indigo-50 focus:ring-indigo-800 ml-4 sm:ml-8'
-              href='javascript:void(0)'>
+            <a className='rounded-full focus:outline-none focus:ring-2 focus:bg-indigo-50 focus:ring-indigo-800 ml-4 sm:ml-8'>
               <div className='py-2 px-8 text-gray-600 hover:text-indigo-700 hover:bg-indigo-100 rounded-full '>
                 <p>Pending</p>
               </div>
             </a>
           </div>
-          <button
-            // onclick='popuphandler(true)'
-            className='focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600 mt-4 sm:mt-0 inline-flex items-start justify-start px-6 py-3 bg-indigo-700 hover:bg-indigo-600 focus:outline-none rounded'>
+          <button className='focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600 mt-4 sm:mt-0 inline-flex items-start justify-start px-6 py-3 bg-indigo-700 hover:bg-indigo-600 focus:outline-none rounded'>
             <p className='text-sm font-medium leading-none text-white'>
               Add Task
             </p>
@@ -227,7 +124,9 @@ const Dashboard = () => {
         <div className='mt-7 overflow-x-auto'>
           <table className='w-full whitespace-nowrap'>
             <tbody>
-              <RowAccount />
+              {data?.getUsersAccount.map((user) => {
+                return <RowAccount {...user} key={user?.id} />;
+              })}
               <tr className='h-3'></tr>
             </tbody>
           </table>
@@ -237,11 +136,65 @@ const Dashboard = () => {
   );
 };
 
-const RowAccount = () => {
+const RowAccount = ({
+  id,
+  email,
+  firstName,
+  lastName,
+  isSeller,
+  accountStatus,
+}: any) => {
+  const isActive = accountStatus === AccountStatus.Active;
+  const isVerified = isSeller === true;
+
+  const [deleteAccountMutation] = useDeleteUserAccountMutation();
+  const [confirmUserIsSellerMutation, { loading }] =
+    useConfirmUserIsSellerMutation();
+
+  const toast = useToast();
+
+  const actionAccount = () => {
+    confirmUserIsSellerMutation({
+      onCompleted: (data) => {
+        const { firstName, lastName } = data?.confirmUserIsSeller!;
+        toast({
+          title: 'Account Verified',
+          description: `${firstName} ${lastName} Account has been verified`,
+          status: 'success',
+          duration: 5000,
+          isClosable: true,
+        });
+      },
+      refetchQueries: [UsersAccountDocument, 'UsersAccount'],
+      variables: {
+        id,
+      },
+    });
+  };
+
+  const deleteAccount = async () => {
+    deleteAccountMutation({
+      onCompleted: (data) => {
+        const { firstName, lastName } = data?.deleteUserAccount!;
+        toast({
+          title: 'Account Deleted',
+          description: `${firstName} ${lastName} Account has been deleted `,
+          status: 'success',
+          duration: 5000,
+          isClosable: true,
+        });
+      },
+      refetchQueries: [UsersAccountDocument, 'UsersAccount'],
+      variables: {
+        id,
+      },
+    });
+  };
+
   return (
     <tr className='h-16 border border-gray-100'>
       <td className='pl-5'>
-        <div className='w-10 h-10 flex-shrink-0 mr-2 sm:mr-3'>
+        <div className='w-10 h-10'>
           <img
             className='rounded-full object-cover'
             src='https://pbs.twimg.com/profile_images/1450115233205272576/CFTTK-0I_400x400.jpg'
@@ -249,16 +202,21 @@ const RowAccount = () => {
         </div>
       </td>
       <td>
-        <div className='flex items-center pl-5'>
-          <p className='font-medium text-gray-800'>Philip Harbach</p>
+        <div className='flex items-center'>
+          <p className='font-medium text-gray-800'>
+            {firstName} {lastName}
+          </p>
         </div>
       </td>
       <td className='p-2 whitespace-nowrap'>
-        <div className='text-left'>alexshatov@gmail.com</div>
+        <div className='text-left'>{email}</div>
       </td>
       <td>
-        <span className='text-xs capitalize px-3 py-1 rounded-full font-semibold bg-green-200 text-green-900'>
-          active
+        <span
+          className={`text-xs capitalize px-3 py-1 rounded-full font-semibold ${
+            isActive ? 'bg-green-200 text-green-900' : 'bg-red-200 text-red-900'
+          }`}>
+          {isActive ? 'active' : 'inactive'}
         </span>
       </td>
       <td className='pl-5'>
@@ -268,15 +226,109 @@ const RowAccount = () => {
         </div>
       </td>
       <td className='pl-5'>
-        <button className='py-3 px-3 text-sm focus:outline-none leading-none text-red-700 bg-red-100 rounded'>
-          Due today at 18:00
-        </button>
+        <Popover>
+          <PopoverTrigger>
+            <button
+              className={`px-3 py-1 capitalize text-xs font-semibold rounded-full ${
+                isVerified
+                  ? 'text-green-900 bg-green-200'
+                  : 'text-red-700 bg-red-100'
+              } `}>
+              {isVerified ? 'verified' : 'Not verified'}
+            </button>
+          </PopoverTrigger>
+          <Portal>
+            {!isVerified && (
+              <PopoverContent>
+                <PopoverArrow />
+                <PopoverHeader>Verify this Seller</PopoverHeader>
+                <PopoverCloseButton />
+                <PopoverBody d='flex' justifyContent='flex-start'>
+                  <ButtonGroup size='sm'>
+                    <Button variant='outline'>Cancel</Button>
+                    <Button onClick={actionAccount} colorScheme='green'>
+                      Verify
+                    </Button>
+                  </ButtonGroup>
+                </PopoverBody>
+              </PopoverContent>
+            )}
+          </Portal>
+        </Popover>
       </td>
       <td className='pl-4'>
-        <button className='focus:ring-2 focus:ring-offset-2 focus:ring-red-300 text-sm leading-none text-gray-600 py-3 px-5 bg-gray-100 rounded hover:bg-gray-200 focus:outline-none'>
-          View
-        </button>
+        <Menu>
+          <MenuButton as={Button} rightIcon={<KeyboardArrowDownIcon />}>
+            Actions
+          </MenuButton>
+          <MenuList>
+            <MenuItem>View</MenuItem>
+            <MenuItem onClick={deleteAccount}>Delete</MenuItem>
+          </MenuList>
+        </Menu>
       </td>
     </tr>
   );
 };
+
+// function UploadFile() {
+//   const [preview, setPreview] = useState<any>([]);
+
+//   const [mutate, { data }] = useMutation(MUTATION, {
+//     onCompleted: () => {
+//       console.log('completed');
+//     },
+//   });
+
+//   console.log(data);
+
+//   const onChange = async (e: any) => {
+//     const files = e.target.files;
+
+//     const image_preview = [...files].map((file: any) => {
+//       return { [file.name]: URL.createObjectURL(file) };
+//     });
+
+//     setPreview((prev: any) => [...prev, ...image_preview]);
+
+//     // const image_preview = { [file.name]: URL.createObjectURL(file) };
+
+//     // console.log(image_preview);
+
+//     // console.log({
+//     //   variables: {
+//     //     name: 'store 51',
+//     //     thumbnail: [file],
+//     //     document_verification: [file],
+//     //   },
+//     // });
+
+//     // mutate({
+//     //   variables: {
+//     //     name: 'store 51',
+//     //     thumbnail: [file],
+//     //     document_verification: [file],
+//     //   },
+//     // });
+//   };
+
+//   return (
+//     <div>
+//       <input
+//         onChange={onChange}
+//         type='file'
+//         className='block w-full text-sm text-slate-500
+//    file:mr-4 file:py-2 file:px-4
+//    file:rounded-full file:border-0
+//    file:text-sm file:font-semibold
+//    file:bg-violet-50 file:text-violet-700
+//    hover:file:bg-violet-100
+//  '
+//       />
+
+//       {preview.map((item: any, key) => {
+//         return <img src={Object.values(item)[0]} key={key} />;
+//       })}
+//     </div>
+//   );
+// }

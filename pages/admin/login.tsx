@@ -1,4 +1,3 @@
-import { SuperLayout } from 'layouts/super.layout';
 import { NextPage } from 'next';
 
 export const Page: NextPage = ({}) => {
