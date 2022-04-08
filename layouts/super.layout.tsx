@@ -9,23 +9,22 @@ type Props = {
 
 const SidBar = () => {
   return (
-    <aside className='flex flex-col border-r border-zinc-700'>
-      <a className='block px-2 py-3 text-xs font-medium text-zinc-400'>
-        All messages
-      </a>
+    <div className='flex flex-col border-r border-zinc-700'>
       <div className='flex-1 w-48 px-2 pt-2 space-y-1 bg-slate-400'>
         <Link href='/super/admins'>
           <a className='bg-blue-600 text-green-500  block px-2 py-2 rounded'>
             Admin
           </a>
         </Link>
+        <h1 className='text-red-500 text-lg bg-slate-900'>azz</h1>
+
         <Link href='/super/dashboard' as='/super/sellers'>
           <a className='bg-blue-600 text-green-500  block px-2 py-2 rounded'>
             Sellers
           </a>
         </Link>
       </div>
-    </aside>
+    </div>
   );
 };
 
@@ -36,9 +35,10 @@ export const SuperLayout = ({ children }: Props) => {
         <title>Layouts Example</title>
       </Head>
       <ChakraProvider>
-        <div className='flex h-screen antialiased p-3 bg-zinc-800'>
+        <div className='flex h-screen'>
           <SidBar />
-          <main className='flex w-full bg-zinc-900'>{children}</main>
+          <div className=' w-10 h-10 shadow-xl bg-slate-700'>azz</div>
+          <main className='flex w-full'>{children}</main>
         </div>
       </ChakraProvider>
     </>
