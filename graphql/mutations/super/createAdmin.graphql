@@ -3,5 +3,6 @@ mutation createAdmin($input: AdminInput) {
     id
     name
     email
+    createdAt
   }
 }
