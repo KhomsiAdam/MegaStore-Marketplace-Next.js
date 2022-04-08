@@ -9,17 +9,20 @@ type Props = {
 
 const SidBar = () => {
   return (
-    <div className='flex flex-col border-r border-zinc-700'>
-      <div className='flex-1 w-48 px-2 pt-2 space-y-1 bg-slate-400'>
+    <div className='flex flex-col border-r border-gray-300'>
+      <Link href='/'>
+        <a className='block px-2 py-3 text-xs font-medium text-zinc-400 hover:text-zinc-200'>
+          All messages
+        </a>
+      </Link>
+      <div className='flex-1 w-48 px-2 pt-2 space-y-1'>
         <Link href='/super/admins'>
-          <a className='bg-blue-600 text-green-500  block px-2 py-2 rounded'>
+          <a className='hover:bg-gray-700/50 hover:text-white text-gray-900 0 block px-2 py-2 rounded'>
             Admin
           </a>
         </Link>
-        <h1 className='text-red-500 text-lg bg-slate-900'>azz</h1>
-
         <Link href='/super/dashboard' as='/super/sellers'>
-          <a className='bg-blue-600 text-green-500  block px-2 py-2 rounded'>
+          <a className='transition hover:bg-gray-700/50 hover:text-white  text-gray-900  block px-2 py-2 rounded'>
             Sellers
           </a>
         </Link>
@@ -35,10 +38,9 @@ export const SuperLayout = ({ children }: Props) => {
         <title>Layouts Example</title>
       </Head>
       <ChakraProvider>
-        <div className='flex h-screen'>
+        <div className='flex h-screen antialiased text-zinc-100 bg-gray-100'>
           <SidBar />
-          <div className=' w-10 h-10 shadow-xl bg-slate-700'>azz</div>
-          <main className='flex w-full'>{children}</main>
+          <main className='flex w-full bg-white'>{children}</main>
         </div>
       </ChakraProvider>
     </>

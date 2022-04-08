@@ -13,6 +13,7 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  Date: any;
   /** The `Upload` scalar type represents a file upload. */
   Upload: any;
 };
@@ -34,10 +35,10 @@ export type Address = {
 
 export type Admin = {
   __typename?: 'Admin';
+  createdAt: Scalars['Date'];
   email: Scalars['String'];
   id: Scalars['ID'];
   name: Scalars['String'];
-  password: Scalars['String'];
 };
 
 export type AdminInput = {
@@ -120,7 +121,6 @@ export type Media = {
 export type Mutation = {
   __typename?: 'Mutation';
   addCustomer?: Maybe<Customer>;
-  addImage?: Maybe<Array<Scalars['String']>>;
   addSuper: Super;
   confirmUserIsSeller?: Maybe<User>;
   createAdmin: Admin;
@@ -128,6 +128,7 @@ export type Mutation = {
   createCategory: Category;
   createProduct: Product;
   createStore: Store;
+  deleteAdminAccount?: Maybe<Admin>;
   deleteBrand?: Maybe<Brand>;
   deleteCategory?: Maybe<Category>;
   deleteProduct?: Maybe<Product>;
@@ -145,11 +146,6 @@ export type Mutation = {
 
 export type MutationAddCustomerArgs = {
   input?: InputMaybe<InputCustomer>;
-};
-
-
-export type MutationAddImageArgs = {
-  input?: InputMaybe<FileInput>;
 };
 
 
@@ -188,6 +184,11 @@ export type MutationCreateStoreArgs = {
   document_verification?: InputMaybe<Scalars['Upload']>;
   name: Scalars['String'];
   thumbnail: Array<InputMaybe<Scalars['Upload']>>;
+};
+
+
+export type MutationDeleteAdminAccountArgs = {
+  id: Scalars['ID'];
 };
 
 
@@ -300,6 +301,7 @@ export type Query = {
   brand?: Maybe<Brand>;
   brands: Array<Maybe<Brand>>;
   categories: Array<Maybe<Category>>;
+  getAdminsAccount?: Maybe<Array<Admin>>;
   getAll?: Maybe<Array<Super>>;
   getCustomers: Array<Maybe<Customer>>;
   getUsersAccount: Array<Maybe<User>>;
@@ -430,20 +432,6 @@ export type StoreFragment = { __typename?: 'Store', id: string, name: string, st
 
 export type UserFieldsFragment = { __typename?: 'User', id: string, firstName: string, lastName: string, email: string, role: Role, accountStatus?: AccountStatus | null, typeAccount?: TypeAccount | null, isSeller: boolean, store?: { __typename?: 'Store', id: string, name: string, status: StoreStatus, thumbnail: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, products: Array<{ __typename?: 'Product', id: string, name: string, description: string, price: number, discount: number, brand: string, stock: number, thumbnails: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, category: Array<{ __typename?: 'Category', id: string, name: string } | null> } | null> } | null };
 
-export type ConfirmUserIsSellerMutationVariables = Exact<{
-  id: Scalars['ID'];
-}>;
-
-
-export type ConfirmUserIsSellerMutation = { __typename?: 'Mutation', confirmUserIsSeller?: { __typename?: 'User', id: string, firstName: string, lastName: string } | null };
-
-export type DeleteUserAccountMutationVariables = Exact<{
-  id: Scalars['ID'];
-}>;
-
-
-export type DeleteUserAccountMutation = { __typename?: 'Mutation', deleteUserAccount?: { __typename?: 'User', id: string, firstName: string, lastName: string } | null };
-
 export type LoginMutationVariables = Exact<{
   email: Scalars['String'];
   password: Scalars['String'];
@@ -468,6 +456,34 @@ export type CreateStoreMutationVariables = Exact<{
 
 export type CreateStoreMutation = { __typename?: 'Mutation', createStore: { __typename?: 'Store', id: string, name: string, status: StoreStatus, thumbnail: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, products: Array<{ __typename?: 'Product', id: string, name: string, description: string, price: number, discount: number, stock: number, thumbnails: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, category: Array<{ __typename?: 'Category', id: string, name: string } | null> } | null> } };
 
+export type ConfirmUserIsSellerMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type ConfirmUserIsSellerMutation = { __typename?: 'Mutation', confirmUserIsSeller?: { __typename?: 'User', id: string, firstName: string, lastName: string } | null };
+
+export type CreateAdminMutationVariables = Exact<{
+  input?: InputMaybe<AdminInput>;
+}>;
+
+
+export type CreateAdminMutation = { __typename?: 'Mutation', createAdmin: { __typename?: 'Admin', id: string, name: string, email: string } };
+
+export type DeleteAdminAccountMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type DeleteAdminAccountMutation = { __typename?: 'Mutation', deleteAdminAccount?: { __typename?: 'Admin', id: string, name: string, email: string, createdAt: any } | null };
+
+export type DeleteUserAccountMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type DeleteUserAccountMutation = { __typename?: 'Mutation', deleteUserAccount?: { __typename?: 'User', id: string, firstName: string, lastName: string } | null };
+
 export type UsersAccountQueryVariables = Exact<{
   role: Role;
   isSeller?: InputMaybe<Scalars['Boolean']>;
@@ -480,6 +496,11 @@ export type CategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type CategoriesQuery = { __typename?: 'Query', categories: Array<{ __typename?: 'Category', id: string, name: string } | null> };
+
+export type GetAdminsAccountQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAdminsAccountQuery = { __typename?: 'Query', getAdminsAccount?: Array<{ __typename?: 'Admin', id: string, name: string, email: string, createdAt: any }> | null };
 
 export type GetProductByIdQueryVariables = Exact<{
   getProductByIdId: Scalars['String'];
@@ -573,76 +594,6 @@ export const UserFieldsFragmentDoc = gql`
   isSeller
 }
     `;
-export const ConfirmUserIsSellerDocument = gql`
-    mutation ConfirmUserIsSeller($id: ID!) {
-  confirmUserIsSeller(id: $id) {
-    id
-    firstName
-    lastName
-  }
-}
-    `;
-export type ConfirmUserIsSellerMutationFn = Apollo.MutationFunction<ConfirmUserIsSellerMutation, ConfirmUserIsSellerMutationVariables>;
-
-/**
- * __useConfirmUserIsSellerMutation__
- *
- * To run a mutation, you first call `useConfirmUserIsSellerMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useConfirmUserIsSellerMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [confirmUserIsSellerMutation, { data, loading, error }] = useConfirmUserIsSellerMutation({
- *   variables: {
- *      id: // value for 'id'
- *   },
- * });
- */
-export function useConfirmUserIsSellerMutation(baseOptions?: Apollo.MutationHookOptions<ConfirmUserIsSellerMutation, ConfirmUserIsSellerMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<ConfirmUserIsSellerMutation, ConfirmUserIsSellerMutationVariables>(ConfirmUserIsSellerDocument, options);
-      }
-export type ConfirmUserIsSellerMutationHookResult = ReturnType<typeof useConfirmUserIsSellerMutation>;
-export type ConfirmUserIsSellerMutationResult = Apollo.MutationResult<ConfirmUserIsSellerMutation>;
-export type ConfirmUserIsSellerMutationOptions = Apollo.BaseMutationOptions<ConfirmUserIsSellerMutation, ConfirmUserIsSellerMutationVariables>;
-export const DeleteUserAccountDocument = gql`
-    mutation DeleteUserAccount($id: ID!) {
-  deleteUserAccount(id: $id) {
-    id
-    firstName
-    lastName
-  }
-}
-    `;
-export type DeleteUserAccountMutationFn = Apollo.MutationFunction<DeleteUserAccountMutation, DeleteUserAccountMutationVariables>;
-
-/**
- * __useDeleteUserAccountMutation__
- *
- * To run a mutation, you first call `useDeleteUserAccountMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useDeleteUserAccountMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [deleteUserAccountMutation, { data, loading, error }] = useDeleteUserAccountMutation({
- *   variables: {
- *      id: // value for 'id'
- *   },
- * });
- */
-export function useDeleteUserAccountMutation(baseOptions?: Apollo.MutationHookOptions<DeleteUserAccountMutation, DeleteUserAccountMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<DeleteUserAccountMutation, DeleteUserAccountMutationVariables>(DeleteUserAccountDocument, options);
-      }
-export type DeleteUserAccountMutationHookResult = ReturnType<typeof useDeleteUserAccountMutation>;
-export type DeleteUserAccountMutationResult = Apollo.MutationResult<DeleteUserAccountMutation>;
-export type DeleteUserAccountMutationOptions = Apollo.BaseMutationOptions<DeleteUserAccountMutation, DeleteUserAccountMutationVariables>;
 export const LoginDocument = gql`
     mutation Login($email: String!, $password: String!) {
   login(email: $email, password: $password) {
@@ -755,6 +706,147 @@ export function useCreateStoreMutation(baseOptions?: Apollo.MutationHookOptions<
 export type CreateStoreMutationHookResult = ReturnType<typeof useCreateStoreMutation>;
 export type CreateStoreMutationResult = Apollo.MutationResult<CreateStoreMutation>;
 export type CreateStoreMutationOptions = Apollo.BaseMutationOptions<CreateStoreMutation, CreateStoreMutationVariables>;
+export const ConfirmUserIsSellerDocument = gql`
+    mutation ConfirmUserIsSeller($id: ID!) {
+  confirmUserIsSeller(id: $id) {
+    id
+    firstName
+    lastName
+  }
+}
+    `;
+export type ConfirmUserIsSellerMutationFn = Apollo.MutationFunction<ConfirmUserIsSellerMutation, ConfirmUserIsSellerMutationVariables>;
+
+/**
+ * __useConfirmUserIsSellerMutation__
+ *
+ * To run a mutation, you first call `useConfirmUserIsSellerMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useConfirmUserIsSellerMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [confirmUserIsSellerMutation, { data, loading, error }] = useConfirmUserIsSellerMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useConfirmUserIsSellerMutation(baseOptions?: Apollo.MutationHookOptions<ConfirmUserIsSellerMutation, ConfirmUserIsSellerMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ConfirmUserIsSellerMutation, ConfirmUserIsSellerMutationVariables>(ConfirmUserIsSellerDocument, options);
+      }
+export type ConfirmUserIsSellerMutationHookResult = ReturnType<typeof useConfirmUserIsSellerMutation>;
+export type ConfirmUserIsSellerMutationResult = Apollo.MutationResult<ConfirmUserIsSellerMutation>;
+export type ConfirmUserIsSellerMutationOptions = Apollo.BaseMutationOptions<ConfirmUserIsSellerMutation, ConfirmUserIsSellerMutationVariables>;
+export const CreateAdminDocument = gql`
+    mutation createAdmin($input: AdminInput) {
+  createAdmin(input: $input) {
+    id
+    name
+    email
+  }
+}
+    `;
+export type CreateAdminMutationFn = Apollo.MutationFunction<CreateAdminMutation, CreateAdminMutationVariables>;
+
+/**
+ * __useCreateAdminMutation__
+ *
+ * To run a mutation, you first call `useCreateAdminMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateAdminMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createAdminMutation, { data, loading, error }] = useCreateAdminMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateAdminMutation(baseOptions?: Apollo.MutationHookOptions<CreateAdminMutation, CreateAdminMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateAdminMutation, CreateAdminMutationVariables>(CreateAdminDocument, options);
+      }
+export type CreateAdminMutationHookResult = ReturnType<typeof useCreateAdminMutation>;
+export type CreateAdminMutationResult = Apollo.MutationResult<CreateAdminMutation>;
+export type CreateAdminMutationOptions = Apollo.BaseMutationOptions<CreateAdminMutation, CreateAdminMutationVariables>;
+export const DeleteAdminAccountDocument = gql`
+    mutation DeleteAdminAccount($id: ID!) {
+  deleteAdminAccount(id: $id) {
+    id
+    name
+    email
+    createdAt
+  }
+}
+    `;
+export type DeleteAdminAccountMutationFn = Apollo.MutationFunction<DeleteAdminAccountMutation, DeleteAdminAccountMutationVariables>;
+
+/**
+ * __useDeleteAdminAccountMutation__
+ *
+ * To run a mutation, you first call `useDeleteAdminAccountMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteAdminAccountMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteAdminAccountMutation, { data, loading, error }] = useDeleteAdminAccountMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteAdminAccountMutation(baseOptions?: Apollo.MutationHookOptions<DeleteAdminAccountMutation, DeleteAdminAccountMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteAdminAccountMutation, DeleteAdminAccountMutationVariables>(DeleteAdminAccountDocument, options);
+      }
+export type DeleteAdminAccountMutationHookResult = ReturnType<typeof useDeleteAdminAccountMutation>;
+export type DeleteAdminAccountMutationResult = Apollo.MutationResult<DeleteAdminAccountMutation>;
+export type DeleteAdminAccountMutationOptions = Apollo.BaseMutationOptions<DeleteAdminAccountMutation, DeleteAdminAccountMutationVariables>;
+export const DeleteUserAccountDocument = gql`
+    mutation DeleteUserAccount($id: ID!) {
+  deleteUserAccount(id: $id) {
+    id
+    firstName
+    lastName
+  }
+}
+    `;
+export type DeleteUserAccountMutationFn = Apollo.MutationFunction<DeleteUserAccountMutation, DeleteUserAccountMutationVariables>;
+
+/**
+ * __useDeleteUserAccountMutation__
+ *
+ * To run a mutation, you first call `useDeleteUserAccountMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteUserAccountMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteUserAccountMutation, { data, loading, error }] = useDeleteUserAccountMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteUserAccountMutation(baseOptions?: Apollo.MutationHookOptions<DeleteUserAccountMutation, DeleteUserAccountMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteUserAccountMutation, DeleteUserAccountMutationVariables>(DeleteUserAccountDocument, options);
+      }
+export type DeleteUserAccountMutationHookResult = ReturnType<typeof useDeleteUserAccountMutation>;
+export type DeleteUserAccountMutationResult = Apollo.MutationResult<DeleteUserAccountMutation>;
+export type DeleteUserAccountMutationOptions = Apollo.BaseMutationOptions<DeleteUserAccountMutation, DeleteUserAccountMutationVariables>;
 export const UsersAccountDocument = gql`
     query UsersAccount($role: Role!, $isSeller: Boolean) {
   getUsersAccount(role: $role, isSeller: $isSeller) {
@@ -832,6 +924,43 @@ export function useCategoriesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions
 export type CategoriesQueryHookResult = ReturnType<typeof useCategoriesQuery>;
 export type CategoriesLazyQueryHookResult = ReturnType<typeof useCategoriesLazyQuery>;
 export type CategoriesQueryResult = Apollo.QueryResult<CategoriesQuery, CategoriesQueryVariables>;
+export const GetAdminsAccountDocument = gql`
+    query GetAdminsAccount {
+  getAdminsAccount {
+    id
+    name
+    email
+    createdAt
+  }
+}
+    `;
+
+/**
+ * __useGetAdminsAccountQuery__
+ *
+ * To run a query within a React component, call `useGetAdminsAccountQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAdminsAccountQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAdminsAccountQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAdminsAccountQuery(baseOptions?: Apollo.QueryHookOptions<GetAdminsAccountQuery, GetAdminsAccountQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAdminsAccountQuery, GetAdminsAccountQueryVariables>(GetAdminsAccountDocument, options);
+      }
+export function useGetAdminsAccountLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAdminsAccountQuery, GetAdminsAccountQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAdminsAccountQuery, GetAdminsAccountQueryVariables>(GetAdminsAccountDocument, options);
+        }
+export type GetAdminsAccountQueryHookResult = ReturnType<typeof useGetAdminsAccountQuery>;
+export type GetAdminsAccountLazyQueryHookResult = ReturnType<typeof useGetAdminsAccountLazyQuery>;
+export type GetAdminsAccountQueryResult = Apollo.QueryResult<GetAdminsAccountQuery, GetAdminsAccountQueryVariables>;
 export const GetProductByIdDocument = gql`
     query GetProductById($getProductByIdId: String!) {
   product(id: $getProductByIdId) {

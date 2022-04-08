@@ -17,7 +17,7 @@ import {
   Portal,
   useToast,
 } from '@chakra-ui/react';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect } from 'react';
 import AttachmentOutlinedIcon from '@mui/icons-material/AttachmentOutlined';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import {
@@ -138,7 +138,7 @@ const RowAccount = ({
 
   const actionAccount = () => {
     confirmUserIsSellerMutation({
-      onCompleted: (data) => {
+      onCompleted: (data: any) => {
         const { firstName, lastName } = data?.confirmUserIsSeller!;
         toast({
           title: 'Account Verified',
@@ -157,7 +157,7 @@ const RowAccount = ({
 
   const deleteAccount = async () => {
     deleteAccountMutation({
-      onCompleted: (data) => {
+      onCompleted: (data: any) => {
         const { firstName, lastName } = data?.deleteUserAccount!;
         toast({
           title: 'Account Deleted',

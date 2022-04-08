@@ -1,0 +1,8 @@
+query GetAdminsAccount {
+  getAdminsAccount {
+    id
+    name
+    email
+    createdAt
+  }
+}

@@ -31,6 +31,7 @@ class MyDocument extends Document {
       <Html>
         <Head>
           <link rel='preconnect' href='https://fonts.gstatic.com' />
+          {/* <script src='https://cdn.tailwindcss.com'></script> */}
           <link
             rel='preload'
             as='style'
