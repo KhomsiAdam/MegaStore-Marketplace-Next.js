@@ -181,7 +181,7 @@ export type MutationCreateProductArgs = {
 
 
 export type MutationCreateStoreArgs = {
-  document_verification?: InputMaybe<Scalars['Upload']>;
+  document_verification?: InputMaybe<Array<InputMaybe<Scalars['Upload']>>>;
   name: Scalars['String'];
   thumbnail: Array<InputMaybe<Scalars['Upload']>>;
 };
@@ -351,7 +351,7 @@ export enum Sort {
 
 export type Store = {
   __typename?: 'Store';
-  document_verification?: Maybe<Media>;
+  document_verification?: Maybe<Array<Maybe<Media>>>;
   id: Scalars['ID'];
   limit_product?: Maybe<Scalars['Int']>;
   name: Scalars['String'];
@@ -428,7 +428,7 @@ export type ResponseSub = {
   subscription?: Maybe<Scalars['String']>;
 };
 
-export type StoreFragment = { __typename?: 'Store', id: string, name: string, status: StoreStatus, thumbnail: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, products: Array<{ __typename?: 'Product', id: string, name: string, description: string, price: number, discount: number, stock: number, thumbnails: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, category: Array<{ __typename?: 'Category', id: string, name: string } | null> } | null> };
+export type StoreFragment = { __typename?: 'Store', id: string, name: string, status: StoreStatus, thumbnail: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, products: Array<{ __typename?: 'Product', id: string, name: string, description: string, price: number, discount: number, stock: number, thumbnails: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, category: Array<{ __typename?: 'Category', id: string, name: string } | null> } | null>, document_verification?: Array<{ __typename?: 'Media', alt: string, id: string, src: string, type: string } | null> | null, owner: { __typename?: 'User', id: string, firstName: string, lastName: string, email: string, role: Role, accountStatus?: AccountStatus | null, typeAccount?: TypeAccount | null, isSeller: boolean, store?: { __typename?: 'Store', id: string, name: string, status: StoreStatus, thumbnail: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, products: Array<{ __typename?: 'Product', id: string, name: string, description: string, price: number, discount: number, brand: string, stock: number, thumbnails: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, category: Array<{ __typename?: 'Category', id: string, name: string } | null> } | null> } | null } };
 
 export type UserFieldsFragment = { __typename?: 'User', id: string, firstName: string, lastName: string, email: string, role: Role, accountStatus?: AccountStatus | null, typeAccount?: TypeAccount | null, isSeller: boolean, store?: { __typename?: 'Store', id: string, name: string, status: StoreStatus, thumbnail: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, products: Array<{ __typename?: 'Product', id: string, name: string, description: string, price: number, discount: number, brand: string, stock: number, thumbnails: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, category: Array<{ __typename?: 'Category', id: string, name: string } | null> } | null> } | null };
 
@@ -448,13 +448,13 @@ export type RegisterMutationVariables = Exact<{
 export type RegisterMutation = { __typename?: 'Mutation', register?: { __typename?: 'AuthPayload', token: string, user: { __typename?: 'User', id: string, firstName: string, lastName: string, email: string, role: Role, accountStatus?: AccountStatus | null, typeAccount?: TypeAccount | null, isSeller: boolean, store?: { __typename?: 'Store', id: string, name: string, status: StoreStatus, thumbnail: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, products: Array<{ __typename?: 'Product', id: string, name: string, description: string, price: number, discount: number, brand: string, stock: number, thumbnails: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, category: Array<{ __typename?: 'Category', id: string, name: string } | null> } | null> } | null } } | null };
 
 export type CreateStoreMutationVariables = Exact<{
-  documentVerification?: InputMaybe<Scalars['Upload']>;
+  documentVerification: Array<InputMaybe<Scalars['Upload']>> | InputMaybe<Scalars['Upload']>;
   thumbnail: Array<InputMaybe<Scalars['Upload']>> | InputMaybe<Scalars['Upload']>;
   name: Scalars['String'];
 }>;
 
 
-export type CreateStoreMutation = { __typename?: 'Mutation', createStore: { __typename?: 'Store', id: string, name: string, status: StoreStatus, thumbnail: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, products: Array<{ __typename?: 'Product', id: string, name: string, description: string, price: number, discount: number, stock: number, thumbnails: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, category: Array<{ __typename?: 'Category', id: string, name: string } | null> } | null> } };
+export type CreateStoreMutation = { __typename?: 'Mutation', createStore: { __typename?: 'Store', id: string, name: string, status: StoreStatus, thumbnail: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, products: Array<{ __typename?: 'Product', id: string, name: string, description: string, price: number, discount: number, stock: number, thumbnails: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, category: Array<{ __typename?: 'Category', id: string, name: string } | null> } | null>, document_verification?: Array<{ __typename?: 'Media', alt: string, id: string, src: string, type: string } | null> | null, owner: { __typename?: 'User', id: string, firstName: string, lastName: string, email: string, role: Role, accountStatus?: AccountStatus | null, typeAccount?: TypeAccount | null, isSeller: boolean, store?: { __typename?: 'Store', id: string, name: string, status: StoreStatus, thumbnail: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, products: Array<{ __typename?: 'Product', id: string, name: string, description: string, price: number, discount: number, brand: string, stock: number, thumbnails: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, category: Array<{ __typename?: 'Category', id: string, name: string } | null> } | null> } | null } } };
 
 export type ConfirmUserIsSellerMutationVariables = Exact<{
   id: Scalars['ID'];
@@ -507,51 +507,20 @@ export type GetProductByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetProductByIdQuery = { __typename?: 'Query', product?: { __typename?: 'Product', brand: string, description: string, discount: number, id: string, name: string, price: number, stock: number, category: Array<{ __typename?: 'Category', id: string, name: string } | null>, store: { __typename?: 'Store', id: string, name: string, status: StoreStatus, thumbnail: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, products: Array<{ __typename?: 'Product', id: string, name: string, description: string, price: number, discount: number, stock: number, thumbnails: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, category: Array<{ __typename?: 'Category', id: string, name: string } | null> } | null> }, thumbnails: Array<{ __typename?: 'Media', alt: string, id: string, src: string, type: string } | null> } | null };
+export type GetProductByIdQuery = { __typename?: 'Query', product?: { __typename?: 'Product', brand: string, description: string, discount: number, id: string, name: string, price: number, stock: number, category: Array<{ __typename?: 'Category', id: string, name: string } | null>, store: { __typename?: 'Store', id: string, name: string, status: StoreStatus, thumbnail: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, products: Array<{ __typename?: 'Product', id: string, name: string, description: string, price: number, discount: number, stock: number, thumbnails: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, category: Array<{ __typename?: 'Category', id: string, name: string } | null> } | null>, document_verification?: Array<{ __typename?: 'Media', alt: string, id: string, src: string, type: string } | null> | null, owner: { __typename?: 'User', id: string, firstName: string, lastName: string, email: string, role: Role, accountStatus?: AccountStatus | null, typeAccount?: TypeAccount | null, isSeller: boolean, store?: { __typename?: 'Store', id: string, name: string, status: StoreStatus, thumbnail: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, products: Array<{ __typename?: 'Product', id: string, name: string, description: string, price: number, discount: number, brand: string, stock: number, thumbnails: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, category: Array<{ __typename?: 'Category', id: string, name: string } | null> } | null> } | null } }, thumbnails: Array<{ __typename?: 'Media', alt: string, id: string, src: string, type: string } | null> } | null };
 
 export type ProductsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ProductsQuery = { __typename?: 'Query', products?: Array<{ __typename?: 'Product', brand: string, description: string, discount: number, id: string, name: string, price: number, stock: number, category: Array<{ __typename?: 'Category', id: string, name: string } | null>, store: { __typename?: 'Store', id: string, name: string, status: StoreStatus, thumbnail: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, products: Array<{ __typename?: 'Product', id: string, name: string, description: string, price: number, discount: number, stock: number, thumbnails: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, category: Array<{ __typename?: 'Category', id: string, name: string } | null> } | null> }, thumbnails: Array<{ __typename?: 'Media', alt: string, id: string, src: string, type: string } | null> } | null> | null };
+export type ProductsQuery = { __typename?: 'Query', products?: Array<{ __typename?: 'Product', brand: string, description: string, discount: number, id: string, name: string, price: number, stock: number, category: Array<{ __typename?: 'Category', id: string, name: string } | null>, store: { __typename?: 'Store', id: string, name: string, status: StoreStatus, thumbnail: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, products: Array<{ __typename?: 'Product', id: string, name: string, description: string, price: number, discount: number, stock: number, thumbnails: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, category: Array<{ __typename?: 'Category', id: string, name: string } | null> } | null>, document_verification?: Array<{ __typename?: 'Media', alt: string, id: string, src: string, type: string } | null> | null, owner: { __typename?: 'User', id: string, firstName: string, lastName: string, email: string, role: Role, accountStatus?: AccountStatus | null, typeAccount?: TypeAccount | null, isSeller: boolean, store?: { __typename?: 'Store', id: string, name: string, status: StoreStatus, thumbnail: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, products: Array<{ __typename?: 'Product', id: string, name: string, description: string, price: number, discount: number, brand: string, stock: number, thumbnails: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, category: Array<{ __typename?: 'Category', id: string, name: string } | null> } | null> } | null } }, thumbnails: Array<{ __typename?: 'Media', alt: string, id: string, src: string, type: string } | null> } | null> | null };
 
 export type StoreQueryVariables = Exact<{
   storeId: Scalars['String'];
 }>;
 
 
-export type StoreQuery = { __typename?: 'Query', store?: { __typename?: 'Store', id: string, name: string, status: StoreStatus, thumbnail: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, products: Array<{ __typename?: 'Product', id: string, name: string, description: string, price: number, discount: number, stock: number, thumbnails: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, category: Array<{ __typename?: 'Category', id: string, name: string } | null> } | null> } | null };
+export type StoreQuery = { __typename?: 'Query', store?: { __typename?: 'Store', id: string, name: string, status: StoreStatus, thumbnail: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, products: Array<{ __typename?: 'Product', id: string, name: string, description: string, price: number, discount: number, stock: number, thumbnails: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, category: Array<{ __typename?: 'Category', id: string, name: string } | null> } | null>, document_verification?: Array<{ __typename?: 'Media', alt: string, id: string, src: string, type: string } | null> | null, owner: { __typename?: 'User', id: string, firstName: string, lastName: string, email: string, role: Role, accountStatus?: AccountStatus | null, typeAccount?: TypeAccount | null, isSeller: boolean, store?: { __typename?: 'Store', id: string, name: string, status: StoreStatus, thumbnail: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, products: Array<{ __typename?: 'Product', id: string, name: string, description: string, price: number, discount: number, brand: string, stock: number, thumbnails: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, category: Array<{ __typename?: 'Category', id: string, name: string } | null> } | null> } | null } } | null };
 
-export const StoreFragmentDoc = gql`
-    fragment store on Store {
-  id
-  name
-  thumbnail {
-    id
-    src
-    alt
-    type
-  }
-  products {
-    id
-    name
-    description
-    price
-    thumbnails {
-      id
-      src
-      alt
-      type
-    }
-    discount
-    category {
-      id
-      name
-    }
-    stock
-  }
-  status
-}
-    `;
 export const UserFieldsFragmentDoc = gql`
     fragment userFields on User {
   id
@@ -594,6 +563,119 @@ export const UserFieldsFragmentDoc = gql`
   isSeller
 }
     `;
+<<<<<<< HEAD
+=======
+export const StoreFragmentDoc = gql`
+    fragment store on Store {
+  id
+  name
+  thumbnail {
+    id
+    src
+    alt
+    type
+  }
+  products {
+    id
+    name
+    description
+    price
+    thumbnails {
+      id
+      src
+      alt
+      type
+    }
+    discount
+    category {
+      id
+      name
+    }
+    stock
+  }
+  status
+  document_verification {
+    alt
+    id
+    src
+    type
+  }
+  owner {
+    ...userFields
+  }
+}
+    ${UserFieldsFragmentDoc}`;
+export const ConfirmUserIsSellerDocument = gql`
+    mutation ConfirmUserIsSeller($id: ID!) {
+  confirmUserIsSeller(id: $id) {
+    id
+    firstName
+    lastName
+  }
+}
+    `;
+export type ConfirmUserIsSellerMutationFn = Apollo.MutationFunction<ConfirmUserIsSellerMutation, ConfirmUserIsSellerMutationVariables>;
+
+/**
+ * __useConfirmUserIsSellerMutation__
+ *
+ * To run a mutation, you first call `useConfirmUserIsSellerMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useConfirmUserIsSellerMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [confirmUserIsSellerMutation, { data, loading, error }] = useConfirmUserIsSellerMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useConfirmUserIsSellerMutation(baseOptions?: Apollo.MutationHookOptions<ConfirmUserIsSellerMutation, ConfirmUserIsSellerMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ConfirmUserIsSellerMutation, ConfirmUserIsSellerMutationVariables>(ConfirmUserIsSellerDocument, options);
+      }
+export type ConfirmUserIsSellerMutationHookResult = ReturnType<typeof useConfirmUserIsSellerMutation>;
+export type ConfirmUserIsSellerMutationResult = Apollo.MutationResult<ConfirmUserIsSellerMutation>;
+export type ConfirmUserIsSellerMutationOptions = Apollo.BaseMutationOptions<ConfirmUserIsSellerMutation, ConfirmUserIsSellerMutationVariables>;
+export const DeleteUserAccountDocument = gql`
+    mutation DeleteUserAccount($id: ID!) {
+  deleteUserAccount(id: $id) {
+    id
+    firstName
+    lastName
+  }
+}
+    `;
+export type DeleteUserAccountMutationFn = Apollo.MutationFunction<DeleteUserAccountMutation, DeleteUserAccountMutationVariables>;
+
+/**
+ * __useDeleteUserAccountMutation__
+ *
+ * To run a mutation, you first call `useDeleteUserAccountMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteUserAccountMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteUserAccountMutation, { data, loading, error }] = useDeleteUserAccountMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteUserAccountMutation(baseOptions?: Apollo.MutationHookOptions<DeleteUserAccountMutation, DeleteUserAccountMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteUserAccountMutation, DeleteUserAccountMutationVariables>(DeleteUserAccountDocument, options);
+      }
+export type DeleteUserAccountMutationHookResult = ReturnType<typeof useDeleteUserAccountMutation>;
+export type DeleteUserAccountMutationResult = Apollo.MutationResult<DeleteUserAccountMutation>;
+export type DeleteUserAccountMutationOptions = Apollo.BaseMutationOptions<DeleteUserAccountMutation, DeleteUserAccountMutationVariables>;
+>>>>>>> 86b3a2e7630efcfca0500a953bf81334d2194d78
 export const LoginDocument = gql`
     mutation Login($email: String!, $password: String!) {
   login(email: $email, password: $password) {
@@ -668,7 +750,7 @@ export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
 export const CreateStoreDocument = gql`
-    mutation CreateStore($documentVerification: Upload, $thumbnail: [Upload]!, $name: String!) {
+    mutation CreateStore($documentVerification: [Upload]!, $thumbnail: [Upload]!, $name: String!) {
   createStore(
     document_verification: $documentVerification
     thumbnail: $thumbnail

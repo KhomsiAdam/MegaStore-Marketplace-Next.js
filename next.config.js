@@ -1,7 +1,4 @@
 // /** @type {import('next').NextConfig} */
-// const nextConfig = {
-//   reactStrictMode: true,
-// }
 
 // module.exports = nextConfig
 const withPWA = require('next-pwa');
@@ -12,9 +9,6 @@ const settings = {
   // devIndicators: {
   //   autoPrerender: false,
   // },
-  images: {
-    domains: ['babelmdina.blob.core.windows.net'],
-  },
   pwa: {
     dest: 'public',
     // mode: 'production',
@@ -27,4 +21,9 @@ const settings = {
   // reactStrictMode: true,
 };
 
-module.exports = process.env.NODE_ENV === 'development' ? settings : withPWA(settings);
+module.exports = {
+  images: {
+    domains: ['babelmdina.blob.core.windows.net'],
+  },
+}
+// module.exports = process.env.NODE_ENV === 'development' ? settings : withPWA(settings);

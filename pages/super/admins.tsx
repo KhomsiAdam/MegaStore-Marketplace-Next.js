@@ -64,8 +64,8 @@ const CreateAdminDrawer = () => {
 
   const handleCreateAdmin = () => {
     createAdminMutation({
-      update: (cache, { data }) => {
-        const { getAdminsAccount } = cache.readQuery({
+      update: (cache, { data }: any) => {
+        const { getAdminsAccount }: any = cache.readQuery({
           query: GetAdminsAccountDocument,
         });
         cache.writeQuery({
@@ -336,14 +336,14 @@ function DeleteAdminAccount({ id }: any) {
   const handleDeleteAdminAccount = () => {
     deleteAdminAccountMutation({
       update: (cache) => {
-        const { getAdminsAccount } = cache.readQuery({
+        const { getAdminsAccount }: any = cache.readQuery({
           query: GetAdminsAccountDocument,
         });
         cache.writeQuery({
           query: GetAdminsAccountDocument,
           data: {
             getAdminsAccount: getAdminsAccount.filter(
-              (admin) => admin.id !== id
+              (admin: any) => admin.id !== id
             ),
           },
         });
