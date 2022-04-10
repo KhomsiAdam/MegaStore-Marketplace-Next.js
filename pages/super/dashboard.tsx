@@ -5,6 +5,7 @@ import {
   ButtonGroup,
   Menu,
   MenuButton,
+  MenuDivider,
   MenuItem,
   MenuList,
   Popover,
@@ -27,6 +28,7 @@ import {
   useDeleteUserAccountMutation,
   UsersAccountDocument,
   useUsersAccountQuery,
+  useUpdateUserAccountStatusMutation,
 } from '@/graphql/generated/graphql';
 
 export const Page: NextPage = ({}) => {
@@ -130,12 +132,31 @@ const RowAccount = ({
   const isActive = accountStatus === AccountStatus.Active;
   const isVerified = isSeller === true;
 
+  const toast = useToast();
+  const [UpdateUserAccountStatusMutation, { loading: updateStatusLoading }] =
+    useUpdateUserAccountStatusMutation();
   const [deleteAccountMutation] = useDeleteUserAccountMutation();
-  const [confirmUserIsSellerMutation, { loading }] =
+  const [confirmUserIsSellerMutation, { loading: confirmIsSellerLoading }] =
     useConfirmUserIsSellerMutation();
 
-  const toast = useToast();
-
+  const updateUserAccount = () => {
+    UpdateUserAccountStatusMutation({
+      variables: {
+        id,
+        status: isActive ? AccountStatus.Inactive : AccountStatus.Active,
+      },
+      onCompleted: (data) => {
+        toast({
+          title: 'Success',
+          description: 'User account status updated',
+          status: 'success',
+          duration: 5000,
+          isClosable: true,
+        });
+      },
+      refetchQueries: [UsersAccountDocument, 'UsersAccount'],
+    });
+  };
   const actionAccount = () => {
     confirmUserIsSellerMutation({
       onCompleted: (data: any) => {
@@ -167,7 +188,19 @@ const RowAccount = ({
           isClosable: true,
         });
       },
-      refetchQueries: [UsersAccountDocument, 'UsersAccount'],
+      update: (cache, { data }) => {
+        const { getUsersAccount }: any = cache.readQuery({
+          query: UsersAccountDocument,
+        });
+        cache.writeQuery({
+          query: UsersAccountDocument,
+          data: {
+            getUsersAccount: getUsersAccount.filter(
+              (user: any) => user.id !== id
+            ),
+          },
+        });
+      },
       variables: {
         id,
       },
@@ -195,12 +228,36 @@ const RowAccount = ({
         <div className='text-left'>{email}</div>
       </td>
       <td>
-        <span
-          className={`text-xs capitalize px-3 py-1 rounded-full font-semibold ${
-            isActive ? 'bg-green-200 text-green-900' : 'bg-red-200 text-red-900'
-          }`}>
-          {isActive ? 'active' : 'inactive'}
-        </span>
+        <Popover>
+          <PopoverTrigger>
+            <button
+              className={`text-xs capitalize px-3 py-1 rounded-full font-semibold ${
+                isActive
+                  ? 'bg-green-200 text-green-900'
+                  : 'bg-red-200 text-red-900'
+              }`}>
+              {isActive ? 'active' : 'inactive'}
+            </button>
+          </PopoverTrigger>
+          <Portal>
+            <PopoverContent>
+              <PopoverArrow />
+              <PopoverHeader>Account Status</PopoverHeader>
+              <PopoverCloseButton />
+              <PopoverBody d='flex' justifyContent='flex-start'>
+                <ButtonGroup size='sm'>
+                  <Button variant='outline'>Cancel</Button>
+                  <Button
+                    isLoading={updateStatusLoading}
+                    onClick={updateUserAccount}
+                    colorScheme={isActive ? 'red' : 'green'}>
+                    {isActive ? 'Deactivate' : 'Activate'}
+                  </Button>
+                </ButtonGroup>
+              </PopoverBody>
+            </PopoverContent>
+          </Portal>
+        </Popover>
       </td>
       <td className='pl-5'>
         <div className='flex items-center'>
@@ -229,7 +286,10 @@ const RowAccount = ({
                 <PopoverBody d='flex' justifyContent='flex-start'>
                   <ButtonGroup size='sm'>
                     <Button variant='outline'>Cancel</Button>
-                    <Button onClick={actionAccount} colorScheme='green'>
+                    <Button
+                      isLoading={confirmIsSellerLoading}
+                      onClick={actionAccount}
+                      colorScheme='green'>
                       Verify
                     </Button>
                   </ButtonGroup>
@@ -246,6 +306,8 @@ const RowAccount = ({
           </MenuButton>
           <MenuList>
             <MenuItem>View</MenuItem>
+            <MenuItem>Download Document</MenuItem>
+            <MenuDivider />
             <MenuItem onClick={deleteAccount}>Delete</MenuItem>
           </MenuList>
         </Menu>

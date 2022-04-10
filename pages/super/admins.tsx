@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { generate } from 'generate-password';
 import debounce from 'lodash.debounce';
 import { Portal, useToast } from '@chakra-ui/react';
+import ReplayIcon from '@mui/icons-material/Replay';
 import {
   useCreateAdminMutation,
   useGetAdminsAccountQuery,
@@ -54,7 +55,8 @@ export const Page: NextPage = () => {
 const CreateAdminDrawer = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
-  const [createAdminMutation, { loading }] = useCreateAdminMutation();
+  const [createAdminMutation, { loading, error: errorMutation }] =
+    useCreateAdminMutation();
 
   const [admin, setAdmin] = useState({
     name: '',
@@ -163,12 +165,16 @@ const CreateAdminDrawer = () => {
             <Button variant='outline' mr={3} onClick={onClose}>
               Cancel
             </Button>
+
             <Button
+              justifyContent='center'
+              alignItems='center'
+              color='white'
               isLoading={loading}
               onClick={handleCreateAdmin}
-              leftIcon={<AddOutlinedIcon />}
-              colorScheme='green'>
-              Save
+              leftIcon={errorMutation ? <ReplayIcon /> : <AddOutlinedIcon />}
+              colorScheme={errorMutation ? 'yellow' : 'green'}>
+              {errorMutation ? 'Retry' : 'Save'}
             </Button>
           </DrawerFooter>
         </DrawerContent>
@@ -387,7 +393,7 @@ function DeleteAdminAccount({ id }: any) {
     <>
       <Popover>
         <PopoverTrigger>
-          <Button>Trigger</Button>
+          <Button>Action</Button>
         </PopoverTrigger>
         <Portal>
           <PopoverContent>

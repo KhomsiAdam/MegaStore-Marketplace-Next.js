@@ -456,6 +456,14 @@ export type CreateStoreMutationVariables = Exact<{
 
 export type CreateStoreMutation = { __typename?: 'Mutation', createStore: { __typename?: 'Store', id: string, name: string, status: StoreStatus, thumbnail: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, products: Array<{ __typename?: 'Product', id: string, name: string, description: string, price: number, discount: number, stock: number, thumbnails: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, category: Array<{ __typename?: 'Category', id: string, name: string } | null> } | null>, document_verification?: { __typename?: 'Media', alt: string, id: string, src: string, type: string } | null, owner: { __typename?: 'User', id: string, firstName: string, lastName: string, email: string, role: Role, accountStatus?: AccountStatus | null, typeAccount?: TypeAccount | null, isSeller: boolean, store?: { __typename?: 'Store', id: string, name: string, status: StoreStatus, thumbnail: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, products: Array<{ __typename?: 'Product', id: string, name: string, description: string, price: number, discount: number, brand: string, stock: number, thumbnails: Array<{ __typename?: 'Media', id: string, src: string, alt: string, type: string } | null>, category: Array<{ __typename?: 'Category', id: string, name: string } | null> } | null> } | null } } };
 
+export type UpdateUserAccountStatusMutationVariables = Exact<{
+  id: Scalars['ID'];
+  status: AccountStatus;
+}>;
+
+
+export type UpdateUserAccountStatusMutation = { __typename?: 'Mutation', updateUserAccountStatus?: { __typename?: 'User', id: string, firstName: string, lastName: string, email: string, role: Role, isSeller: boolean, accountStatus?: AccountStatus | null, typeAccount?: TypeAccount | null } | null };
+
 export type ConfirmUserIsSellerMutationVariables = Exact<{
   id: Scalars['ID'];
 }>;
@@ -715,6 +723,47 @@ export function useCreateStoreMutation(baseOptions?: Apollo.MutationHookOptions<
 export type CreateStoreMutationHookResult = ReturnType<typeof useCreateStoreMutation>;
 export type CreateStoreMutationResult = Apollo.MutationResult<CreateStoreMutation>;
 export type CreateStoreMutationOptions = Apollo.BaseMutationOptions<CreateStoreMutation, CreateStoreMutationVariables>;
+export const UpdateUserAccountStatusDocument = gql`
+    mutation UpdateUserAccountStatus($id: ID!, $status: AccountStatus!) {
+  updateUserAccountStatus(id: $id, status: $status) {
+    id
+    firstName
+    lastName
+    email
+    role
+    isSeller
+    accountStatus
+    typeAccount
+  }
+}
+    `;
+export type UpdateUserAccountStatusMutationFn = Apollo.MutationFunction<UpdateUserAccountStatusMutation, UpdateUserAccountStatusMutationVariables>;
+
+/**
+ * __useUpdateUserAccountStatusMutation__
+ *
+ * To run a mutation, you first call `useUpdateUserAccountStatusMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateUserAccountStatusMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateUserAccountStatusMutation, { data, loading, error }] = useUpdateUserAccountStatusMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      status: // value for 'status'
+ *   },
+ * });
+ */
+export function useUpdateUserAccountStatusMutation(baseOptions?: Apollo.MutationHookOptions<UpdateUserAccountStatusMutation, UpdateUserAccountStatusMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateUserAccountStatusMutation, UpdateUserAccountStatusMutationVariables>(UpdateUserAccountStatusDocument, options);
+      }
+export type UpdateUserAccountStatusMutationHookResult = ReturnType<typeof useUpdateUserAccountStatusMutation>;
+export type UpdateUserAccountStatusMutationResult = Apollo.MutationResult<UpdateUserAccountStatusMutation>;
+export type UpdateUserAccountStatusMutationOptions = Apollo.BaseMutationOptions<UpdateUserAccountStatusMutation, UpdateUserAccountStatusMutationVariables>;
 export const ConfirmUserIsSellerDocument = gql`
     mutation ConfirmUserIsSeller($id: ID!) {
   confirmUserIsSeller(id: $id) {

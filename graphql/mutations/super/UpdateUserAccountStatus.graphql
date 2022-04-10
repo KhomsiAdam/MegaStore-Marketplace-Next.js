@@ -1,0 +1,12 @@
+mutation UpdateUserAccountStatus($id: ID!, $status: AccountStatus!) {
+  updateUserAccountStatus(id: $id, status: $status) {
+    id
+    firstName
+    lastName
+    email
+    role
+    isSeller
+    accountStatus
+    typeAccount
+  }
+}
